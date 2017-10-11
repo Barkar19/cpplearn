@@ -26,7 +26,8 @@ public:
     CDataSet Cut( int low, int up );
     void Merge( const CDataSet& other );
 
-    int GetSize();
+    int GetSize() const;
+    const vector<int>& GetTargetValues();
 
     const CDataSet& operator=( CDataSet set);
     friend ostream& operator<<( ostream& out, const CDataSet& set );

@@ -6,8 +6,6 @@ using namespace std;
 
 int main()
 {
-    cout << "Hello World!" << endl;
-
     CDataSet data;
 
     data.Load( "data/iris.data", "%f %f %f %f %s", ',' );

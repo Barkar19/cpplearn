@@ -3,14 +3,16 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += main.cpp \
-    cdataset.cpp \
-    cevaluator.cpp \
-    cmodelfactory.cpp \
-    cbaseclassifier.cpp
+SOURCES += src/main.cpp \
+    src/cdataset.cpp \
+    src/cevaluator.cpp \
+    src/cmodelfactory.cpp \
+    src/cbaseclassifier.cpp \
+    src/cnaivebayesclassifier.cpp
 
 HEADERS += \
-    cdataset.h \
-    cevaluator.h \
-    cmodelfactory.h \
-    cbaseclassifier.h
+    src/cdataset.h \
+    src/cevaluator.h \
+    src/cmodelfactory.h \
+    src/cbaseclassifier.h \
+    src/cnaivebayesclassifier.h

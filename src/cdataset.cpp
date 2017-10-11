@@ -205,9 +205,14 @@ void CDataSet::Merge(const CDataSet &other )
     _iSize = _aAttributes.back().size();
 }
 
-int CDataSet::GetSize()
+int CDataSet::GetSize() const
 {
     return _iSize;
+}
+
+const vector<int> &CDataSet::GetTargetValues()
+{
+    return _aAttributes.back();
 }
 
 const CDataSet &CDataSet::operator=( CDataSet set )
