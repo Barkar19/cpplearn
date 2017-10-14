@@ -4,3 +4,8 @@ CBaseClassifier::CBaseClassifier()
 {
 
 }
+
+CBaseClassifier::~CBaseClassifier()
+{
+
+}

@@ -5,7 +5,6 @@
 #include <string>
 #include <map>
 
-using namespace std;
 
 class CDataSet
 {
@@ -21,31 +20,37 @@ public:
     CDataSet( const CDataSet& set) = default;
     CDataSet( CDataSet&& set) = default;
 
-    void Load(string strFileName, string strFormat, char strDelim);
+    void Load(std::string strFileName, std::string strFormat, char strDelim);
     CDataSet Split( int low, int up );
     CDataSet Cut( int low, int up );
     void Merge( const CDataSet& other );
 
+    const std::vector<std::vector<int>>& GetAtributes() const;
+    int GetAttributesSize() const;
     int GetSize() const;
-    const vector<int>& GetTargetValues();
+    int GetAtributesClassCount( unsigned attrID ) const;
+    int ValueToClass( unsigned attrID, int value ) const;
+    const std::vector<int>& GetTargetValues() const;
+    const std::map<int,std::string> GetTargetMap() const;
 
     const CDataSet& operator=( CDataSet set);
-    friend ostream& operator<<( ostream& out, const CDataSet& set );
+    friend std::ostream& operator<<( std::ostream& out, const CDataSet& set );
 
 private:
 
-    void ParseFormat(string strFormat);
+    void ParseFormat(std::string strFormat);
     int GetDiscreteValue(double value);
-    string PrintValue(int i, int j) const;
+    std::string PrintValue(int i, int j) const;
 
     unsigned int _iSize = 0;
 
-    vector< EAttributeType > _aAttributeTypes;
+    std::vector< EAttributeType > _aAttributeTypes;
 
-    vector< vector<int> > _aAttributes;
-    vector< vector<double> > _aRealAttributes;
+    std::vector< std::vector<int> > _aAttributes;
+    std::vector< std::map<int, int> > _aValuesToClassMap;
+    std::vector< std::vector<double> > _aRealAttributes;
 
-    vector< map<int, string> > _aCategoricalMaps;
+    std::vector< std::map<int, std::string> > _aCategoricalMaps;
 
 
 };

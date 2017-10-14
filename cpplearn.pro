@@ -1,5 +1,5 @@
 TEMPLATE = app
-CONFIG += console c++11
+CONFIG += console c++11 c++17
 CONFIG -= app_bundle
 CONFIG -= qt
 
@@ -16,3 +16,6 @@ HEADERS += \
     src/cmodelfactory.h \
     src/cbaseclassifier.h \
     src/cnaivebayesclassifier.h
+
+
+#DEFINES += DEBUG_EVALUATOR
