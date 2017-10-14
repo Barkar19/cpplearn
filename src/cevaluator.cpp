@@ -15,6 +15,7 @@ CStats CEvaluator::CrossValidation(CBaseClassifier* classifier, const CDataSet &
         classifier->fit( trainData );
         std::vector<int> predictedClasses = classifier->predict( testData );
         aStats[i] = CalculateStats( predictedClasses, testData );
+        std::cout << aStats[i];
     }
     return CalculateAverageStat( aStats );
 }

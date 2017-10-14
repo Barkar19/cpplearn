@@ -30,6 +30,9 @@ public:
     int GetSize() const;
     int GetAtributesClassCount( unsigned attrID ) const;
     int ValueToClass( unsigned attrID, int value ) const;
+
+    std::vector<int> AtributesAt( unsigned idx ) const;
+
     const std::vector<int>& GetTargetValues() const;
     const std::map<int,std::string> GetTargetMap() const;
 

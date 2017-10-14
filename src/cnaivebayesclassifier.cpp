@@ -101,8 +101,20 @@ int CNaiveBayesClassifier::CountUnique( const CDataSet &data , int attrID )
 
 std::vector<int> CNaiveBayesClassifier::predict(const CDataSet &testData)
 {
-    std::vector<int> v( testData.GetTargetValues().size(), 0 );
-//    std::random_shuffle( v.begin(), v.end() );
-
-    return v;
+    std::vector<int> result( testData.GetSize() );
+    for ( unsigned idx = 0; idx < testData.GetSize(); idx++ )
+    {
+        std::vector<double> probabilities( _aClassProbability.size(), 1.0 );
+        for( unsigned i = 0; i < _aClassProbability.size(); ++i )
+        {
+            for( const auto value : testData.AtributesAt( idx) )
+            {
+                probabilities[i] *= value;
+            }
+            probabilities[i] *= _aClassProbability[i];
+        }
+        auto it = std::max_element(probabilities.begin(), probabilities.end());
+        result[ idx ] = it - probabilities.begin();
+    }
+    return result;
 }

@@ -50,28 +50,6 @@ void CDataSet::Load( std::string strFileName, std::string strFormat, char strDel
     _aRealAttributes = std::vector<std::vector<double>>( _aAttributeTypes.size() );
     _aCategoricalMaps = std::vector<std::map<int,std::string>>( _aAttributeTypes.size() );
 
-//    for( const EAttributeType& t : _aAttributeTypes )
-//    {
-//        _aAttributes.push_back( std::vector<int>() );
-//        _aRealAttributes.push_back( std::vector<double>() );
-//        _aCategoricalMaps.push_back( std::map<int,std::string>() );
-////        switch( t )
-////        {
-////            case ATTR_INT:
-////            {
-////                break;
-////            }
-////            case ATTR_REAL:
-////            {
-////                break;
-////            }
-////            case ATTR_STRING:
-////            {
-////                break;
-////            }
-////        }
-//    }
-
     std::ifstream file( strFileName );
 
     std::vector<std::string> lines;
@@ -91,7 +69,6 @@ void CDataSet::Load( std::string strFileName, std::string strFormat, char strDel
     for ( const auto& line : lines )
     {
         std::stringstream stream( line );
-//        int integerAttrId = 0, realAttrId = 0, categoricalAttrId = 0;
         int currentAttrId = 0;
         for( const EAttributeType& t : _aAttributeTypes )
         {
@@ -109,7 +86,6 @@ void CDataSet::Load( std::string strFileName, std::string strFormat, char strDel
                 {
                     double realValue = stod( buf );
                     _aRealAttributes[ currentAttrId ].push_back( realValue );
-//                    currentAttrId = ++realAttrId % _aRealAttributes.size();
 
                     value = GetDiscreteValue( realValue );
                     break;
@@ -135,7 +111,6 @@ void CDataSet::Load( std::string strFileName, std::string strFormat, char strDel
                     {
                         value = it->first;
                     }
-//                    categoricalAttrId = ++categoricalAttrId % _aCategoricalMaps.size();
                     break;
                 }
             }
@@ -251,6 +226,16 @@ int CDataSet::ValueToClass(unsigned attrID, int value) const
     return _aValuesToClassMap[attrID].at(value);
 }
 
+std::vector<int> CDataSet::AtributesAt(unsigned idx) const
+{
+    std::vector<int> result(_aAttributes.size() - 1);
+    for ( unsigned i; i < _aAttributes.size() - 1; ++i)
+    {
+        result[ i ] = _aAttributes[ i ][ idx];
+    }
+    return result;
+}
+
 const std::vector<int> &CDataSet::GetTargetValues() const
 {
     return _aAttributes.back();
@@ -304,7 +289,6 @@ std::ostream& operator<<( std::ostream &out, const CDataSet &set )
     out << "DATA SET SIZE "<< set._iSize << "\n";
     out << "ATTRSIBUTES: " << set._aAttributes.size() << std::endl;
 
-
     for( unsigned j = 0; j < set._aAttributes.back().size(); ++j )
     {
         out << "[" << j << ".] ROW: ";
@@ -314,33 +298,5 @@ std::ostream& operator<<( std::ostream &out, const CDataSet &set )
         }
         out << std::endl;
     }
-//    for( unsigned i = 0; i < set._aAttributes.size(); ++i )
-//    {
-//        const auto& column = set._aAttributes[i];
-//        out << static_cast<CDataSet::EAttributeType>( set._aAttributeTypes[i] )<<" ATTR " << i << " SIZE: "<< column.size()  << std::endl;
-//        for ( unsigned j = 0; j < column.size(); ++j )
-//        {
-//            out << column[j];
-//            switch( static_cast<CDataSet::EAttributeType>( set._aAttributeTypes[i] ) )
-//            {
-//                case CDataSet::ATTR_INT:
-//                {
-//                    break;
-//                }
-//                case CDataSet::ATTR_REAL:
-//                {
-//                    out << " ( " << set._aRealAttributes[i][j] << " )";
-
-//                    break;
-//                }
-//                case CDataSet::ATTR_STRING:
-//                {
-//                    out << " ( " << set._aCategoricalMaps[i].at( column[j] ) << " )";
-//                    break;
-//                }
-//            }
-//            out << std::endl;
-//        }
-//    }
     return out;
 }

@@ -72,7 +72,7 @@ struct CStats
         out << "PRECISION: "    << s.precision << std::endl;
         out << "RECALL: "       << s.recall << std::endl;
         out << "ACCURACY: "     << s.accuracy << std::endl;
-        out << "FSCORE: "       << s.fscore << std::endl;
+        out << "FSCORE: "       << s.fscore << std::endl << std::endl;
         return out;
     }
 };

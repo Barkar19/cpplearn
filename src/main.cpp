@@ -17,7 +17,7 @@ int main()
 
     CDataSet copy( data);
 
-    data = copy.Split(data.GetSize() - 12, data.GetSize() );
+//    data = copy.Split(data.GetSize() - 12, data.GetSize() );
 
 //    data.Merge( copy.Split(3, 6) );
 //    data.Merge( data );
@@ -30,7 +30,7 @@ int main()
 //    cout << data;
 //    cout << other;
     CNaiveBayesClassifier* pBayes = new CNaiveBayesClassifier();
-    std::cout << CEvaluator::CrossValidation( pBayes, data, 4 );
+    std::cout << CEvaluator::CrossValidation( pBayes, data );
     delete pBayes;
     return 0;
 }
