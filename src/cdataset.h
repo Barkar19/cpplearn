@@ -16,6 +16,13 @@ public:
         ATTR_STRING
     };
 
+    enum EDiscretizationType
+    {
+        DISCRETIZATION_FREQUENCY,
+        DISCRETIZATION_INTERVAL,
+        DISCRETIZATION_CLUSTERING
+    };
+
     CDataSet();
     CDataSet( const CDataSet& set) = default;
     CDataSet( CDataSet&& set) = default;
@@ -39,8 +46,12 @@ public:
     const CDataSet& operator=( CDataSet set);
     friend std::ostream& operator<<( std::ostream& out, const CDataSet& set );
 
+    void DiscretizeAtribute(unsigned attrID, EDiscretizationType type , unsigned bins );
+    void Discretize( EDiscretizationType type , unsigned bins );
+
 private:
 
+    void Clear();
     void ParseFormat(std::string strFormat);
     int GetDiscreteValue(double value);
     std::string PrintValue(int i, int j) const;

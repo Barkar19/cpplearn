@@ -43,6 +43,7 @@ void CDataSet::ParseFormat( std::string strFormat )
 
 void CDataSet::Load( std::string strFileName, std::string strFormat, char strDelim )
 {
+    Clear();
     ParseFormat( strFormat );
 
     _aAttributes = std::vector<std::vector<int>>( _aAttributeTypes.size() );
@@ -258,6 +259,91 @@ const CDataSet &CDataSet::operator=( CDataSet set )
     std::swap( _aCategoricalMaps, set._aCategoricalMaps );
 
     return *this;
+}
+
+void CDataSet::DiscretizeAtribute(unsigned attrID, CDataSet::EDiscretizationType type, unsigned bins)
+{
+    if ( _aAttributeTypes[ attrID ] == ATTR_REAL ||
+         _aAttributeTypes[ attrID ] == ATTR_INT )
+    {
+        const auto& values = _aRealAttributes[attrID];
+        std::vector<double> boundaries( bins+1, 0.0 );
+        switch ( type )
+        {
+            case DISCRETIZATION_INTERVAL:
+            {
+                double minimum = *std::min_element(std::begin(values), std::end(values));
+                double maximum = *std::max_element(std::begin(values), std::end(values));
+                double interval = ( maximum - minimum ) / bins;
+                boundaries[0] = minimum;
+                for( unsigned i = 1; i <= bins; ++i )
+                {
+                    boundaries[i] = minimum + i * interval;
+                }
+                break;
+            }
+            case DISCRETIZATION_FREQUENCY:
+            {
+                auto tmp = values;
+                std::sort( tmp.begin(), tmp.end() );
+                unsigned interval = tmp.size() / bins;
+                boundaries[0] = *( tmp.begin() );
+                for( unsigned i = 1; i < bins; ++i )
+                {
+
+                    boundaries[i] = *(tmp.begin() + i * interval);
+                }
+                boundaries[bins] = tmp.back();
+                break;
+            }case DISCRETIZATION_CLUSTERING:
+            {
+                return;
+                break;
+            }
+        }
+        std::cout <<"BOUNDARIES FOR ATTR " << attrID << std::endl;
+        for ( auto v : boundaries )
+        {
+            std::cout << v << "\t";
+        }std::cout << std::endl;
+        for ( unsigned i = 0; i < values.size(); ++i)
+        {
+            auto num = values[i];
+            unsigned idx = 0;
+            for( ;(boundaries[idx] > num || num > boundaries[idx+1]) && idx < boundaries.size()-1; idx++ );
+            _aAttributes[attrID][i] = idx;
+        }
+
+        _aValuesToClassMap[attrID].clear();
+        for( unsigned i = 0; i < bins; ++i )
+        {
+
+            _aValuesToClassMap[attrID][i] = i;
+        }
+    }
+}
+
+void CDataSet::Discretize(CDataSet::EDiscretizationType type, unsigned bins)
+{
+    if( bins )
+    {
+        for( unsigned i = 0; i < _aAttributes.size(); ++i )
+        {
+            DiscretizeAtribute( i, type, bins );
+        }
+    }
+}
+
+void CDataSet::Clear()
+{
+    _iSize = 0;
+
+    _aAttributeTypes.clear();
+    _aValuesToClassMap.clear();
+
+    _aAttributes.clear();
+    _aRealAttributes.clear();
+    _aCategoricalMaps.clear();
 }
 
 std::string CDataSet::PrintValue( int i, int j ) const

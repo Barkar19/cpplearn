@@ -12,10 +12,11 @@ CStats CEvaluator::CrossValidation(CBaseClassifier* classifier, const CDataSet &
         CDataSet trainData( dataSet );
         CDataSet testData = trainData.Cut( i * foldSize, ( i + 1 ) * foldSize );
 
-        classifier->fit( trainData );
-        std::vector<int> predictedClasses = classifier->predict( testData );
+        classifier->Fit( trainData );
+        std::vector<int> predictedClasses = classifier->Predict( testData );
+        ConfusionMatrix( predictedClasses, testData );
         aStats[i] = CalculateStats( predictedClasses, testData );
-        std::cout << aStats[i];
+//        std::cout << aStats[i];
     }
     return CalculateAverageStat( aStats );
 }
@@ -44,6 +45,8 @@ std::vector<std::vector<int> > CEvaluator::ConfusionMatrix( const std::vector<in
         }
     }
 #ifdef DEBUG_EVALUATOR
+    std::cout << "CONF MATRIX\n";
+    if ( classID == -1)
     for ( auto row : matrix )
     {
         for ( auto value : row )

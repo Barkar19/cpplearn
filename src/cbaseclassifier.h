@@ -9,8 +9,11 @@ public:
     CBaseClassifier();
     virtual ~CBaseClassifier();
 
-    virtual void fit( const CDataSet& trainData ) = 0;
-    virtual std::vector<int> predict( const CDataSet& testData ) = 0;
+    virtual void Fit( const CDataSet& trainData ) = 0;
+    virtual std::vector<int> Predict( const CDataSet& testData ) = 0;
+
+protected:
+    virtual void clear() = 0;
 };
 
 #endif // CBASECLASSIFIER_H

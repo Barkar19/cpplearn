@@ -18,4 +18,4 @@ HEADERS += \
     src/cnaivebayesclassifier.h
 
 
-#DEFINES += DEBUG_EVALUATOR
+DEFINES += DEBUG_EVALUATOR

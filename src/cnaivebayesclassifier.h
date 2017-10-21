@@ -10,13 +10,12 @@ class CNaiveBayesClassifier : public CBaseClassifier
 public:
     CNaiveBayesClassifier();
     virtual ~CNaiveBayesClassifier();
-    virtual void fit( const CDataSet& trainData ) override;
-    virtual std::vector<int> predict( const CDataSet& testData ) override;
+    virtual void Fit( const CDataSet& trainData ) override;
+    virtual std::vector<int> Predict( const CDataSet& testData ) override;
 
 private:
-    void FillAttributes(const CDataSet &trainData);
-    void FillClasses(const std::vector<int> &atributeValues, std::vector<std::vector<double> > &attributeProbability, std::set<int> &classes);
-    void FillProbability(const std::vector<int> &atributeValues, std::vector<std::vector<double> > &attribute, std::vector<double> &targetClass, int classID);
+    virtual void clear() override;
+
     std::vector<std::vector<double>> CountOccurences(const CDataSet &data, const int attrID );
     int CountUnique( const CDataSet& data, int attrID );
 
