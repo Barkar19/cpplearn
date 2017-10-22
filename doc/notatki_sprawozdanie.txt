@@ -1,0 +1,22 @@
+1. Opisany problem, przeanalizowanie zbiorów, dystrybucja klas, jakie są atrybuty, brakujące wartości(?), OPISANIE ZBIORÓW FEST
+
+2. Pre processing, przygotowujemy go, dyskretyzacja (pokazać) jakie są etapy przetwarzania
+
+3. Zbiór uczący i zbiór treningowy, cross validation, robimy 10, można sprawdzić dla innych wielkości (5 albo 2 ooo to może być ciekawe)
+
+4. Uczymy Bayesa, confussion matrix, obliczamy prec, recall, acc, fscore
+
+(zbudowanego, przetestowanego, zweryfikowanego)
+
+5. Zrobić to dla każdego zbioru
+FSOCRE jest dla nas najbardziej miarodajny, acc może zignorować klasy małoliczne
+
+Jakieś kropki, które oznaczają, że chcemy oddać
+
+MOŻE:
+https://archive.ics.uci.edu/ml/datasets/Statlog+%28Heart%29
+
+CHYBA SĄ OKEJ:
+https://archive.ics.uci.edu/ml/datasets/User+Knowledge+Modeling
+https://archive.ics.uci.edu/ml/datasets/Ecoli
+https://archive.ics.uci.edu/ml/datasets/seeds
