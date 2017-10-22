@@ -136,7 +136,7 @@ int CDataSet::GetDiscreteValue( double value )
     return value;
 }
 
-CDataSet CDataSet::Split(int low, int up)
+CDataSet CDataSet::Split(int low, int up) const
 {
     CDataSet result;
 
@@ -184,22 +184,45 @@ CDataSet CDataSet::Cut(int low, int up)
     return result;
 }
 
+
 void CDataSet::Merge(const CDataSet &other )
 {
-    if ( _aAttributeTypes == other._aAttributeTypes )
+    if( !_iSize )
     {
-        for ( unsigned i = 0; i < _aAttributes.size(); ++i )
+        *this = other;
+    }
+    else
+    {
+        if ( _aAttributeTypes == other._aAttributeTypes )
         {
-            _aAttributes[i].reserve( _aAttributes[i].size() + other._aAttributes[i].size() );
-            _aAttributes[i].insert( _aAttributes[i].end(), other._aAttributes[i].begin(), other._aAttributes[i].end() );
-            if ( _aAttributeTypes[i] == ATTR_REAL )
+            for ( unsigned i = 0; i < _aAttributes.size(); ++i )
             {
-                _aRealAttributes[i].reserve( _aRealAttributes[i].size() + other._aRealAttributes[i].size() );
-                _aRealAttributes[i].insert( _aRealAttributes[i].end(), other._aRealAttributes[i].begin(), other._aRealAttributes[i].end() );
+                _aAttributes[i].reserve( _aAttributes[i].size() + other._aAttributes[i].size() );
+                _aAttributes[i].insert( _aAttributes[i].end(), other._aAttributes[i].begin(), other._aAttributes[i].end() );
+                if ( _aAttributeTypes[i] == ATTR_REAL )
+                {
+                    _aRealAttributes[i].reserve( _aRealAttributes[i].size() + other._aRealAttributes[i].size() );
+                    _aRealAttributes[i].insert( _aRealAttributes[i].end(), other._aRealAttributes[i].begin(), other._aRealAttributes[i].end() );
+                }
             }
         }
+        _iSize = _aAttributes.back().size();
+
+        _aValuesToClassMap = other._aValuesToClassMap;
+        _aCategoricalMaps = other._aCategoricalMaps;
     }
-    _iSize = _aAttributes.back().size();
+}
+
+std::vector<CDataSet> CDataSet::SplitByClasses() const
+{
+    std::vector< CDataSet > aResult( GetTargetMapSize() );
+    for ( unsigned i = 0; i < _iSize; ++i )
+    {
+        const CDataSet record = this->Split(i,i+1);
+        aResult[ ValueToClass( _aAttributes.size() - 1,
+                               _aAttributes[ _aAttributes.size() - 1][i] )].Merge( record );
+    }
+    return aResult;
 }
 
 const std::vector<std::vector<int> > &CDataSet::GetAtributes() const
@@ -207,19 +230,29 @@ const std::vector<std::vector<int> > &CDataSet::GetAtributes() const
     return _aAttributes;
 }
 
-int CDataSet::GetAttributesSize() const
+const std::vector<double> &CDataSet::GetRealAtribute( unsigned attrID ) const
+{
+    return _aRealAttributes[attrID];
+}
+
+unsigned CDataSet::GetAttributesSize() const
 {
     return _aAttributes.size() - 1;
 }
 
-int CDataSet::GetSize() const
+unsigned CDataSet::GetSize() const
 {
     return _iSize;
 }
 
-int CDataSet::GetAtributesClassCount( unsigned attrID ) const
+unsigned CDataSet::GetAtributesClassCount( unsigned attrID ) const
 {
     return _aValuesToClassMap[attrID].size();
+}
+
+CDataSet::EAttributeType CDataSet::GetAttributesType(unsigned attrID) const
+{
+    return _aAttributeTypes[attrID];
 }
 
 int CDataSet::ValueToClass(unsigned attrID, int value) const
@@ -242,9 +275,9 @@ const std::vector<int> &CDataSet::GetTargetValues() const
     return _aAttributes.back();
 }
 
-const std::map<int, std::string> CDataSet::GetTargetMap() const
+unsigned CDataSet::GetTargetMapSize() const
 {
-    return _aCategoricalMaps.back();
+    return _aValuesToClassMap.back().size();
 }
 
 const CDataSet &CDataSet::operator=( CDataSet set )
@@ -263,8 +296,8 @@ const CDataSet &CDataSet::operator=( CDataSet set )
 
 void CDataSet::DiscretizeAtribute(unsigned attrID, CDataSet::EDiscretizationType type, unsigned bins)
 {
-    if ( _aAttributeTypes[ attrID ] == ATTR_REAL ||
-         _aAttributeTypes[ attrID ] == ATTR_INT )
+    if ( _aAttributeTypes[ attrID ] == ATTR_REAL &&
+         attrID != _aAttributeTypes.size() - 1 )
     {
         const auto& values = _aRealAttributes[attrID];
         std::vector<double> boundaries( bins+1, 0.0 );
@@ -301,16 +334,18 @@ void CDataSet::DiscretizeAtribute(unsigned attrID, CDataSet::EDiscretizationType
                 break;
             }
         }
+#ifdef DEBUG_DATASET
         std::cout <<"BOUNDARIES FOR ATTR " << attrID << std::endl;
         for ( auto v : boundaries )
         {
             std::cout << v << "\t";
         }std::cout << std::endl;
+#endif //DEBUG_DATASET
         for ( unsigned i = 0; i < values.size(); ++i)
         {
             auto num = values[i];
             unsigned idx = 0;
-            for( ;(boundaries[idx] > num || num > boundaries[idx+1]) && idx < boundaries.size()-1; idx++ );
+            for( ;idx < boundaries.size()-2 && (boundaries[idx] > num || num > boundaries[idx+1]); idx++ );
             _aAttributes[attrID][i] = idx;
         }
 
@@ -327,7 +362,7 @@ void CDataSet::Discretize(CDataSet::EDiscretizationType type, unsigned bins)
 {
     if( bins )
     {
-        for( unsigned i = 0; i < _aAttributes.size(); ++i )
+        for( unsigned i = 0; i < _aAttributes.size() - 1; ++i )
         {
             DiscretizeAtribute( i, type, bins );
         }

@@ -16,12 +16,15 @@ public:
 private:
     virtual void clear() override;
 
+    std::vector<std::pair<double, double> > NormalDistributionParameters(const CDataSet &data, const int attrID);
     std::vector<std::vector<double>> CountOccurences(const CDataSet &data, const int attrID );
     int CountUnique( const CDataSet& data, int attrID );
+    double LogNormalDistribution(unsigned attrID, unsigned classID, double x);
 
 
     std::vector<double> _aClassProbability;
     std::vector<std::vector<std::vector<double>>> _aAttrProbability;
+    std::vector<std::vector<std::pair<double,double>>> _aAttrNormalDistribution;
 
 };
 

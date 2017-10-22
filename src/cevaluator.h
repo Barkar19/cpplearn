@@ -17,8 +17,8 @@ struct CStats
         }
         else
         {
-            std::cerr << __PRETTY_FUNCTION__ << " Unable to calculate stats! Div zero! Taking 100%\n";
-            precision = 1.0;
+            std::cerr << __PRETTY_FUNCTION__ << " Unable to calculate stats! Div zero! Taking 0.0\n";
+            precision = 0.0;
 //            throw std::runtime_error( __PRETTY_FUNCTION__ + string(" Unable to calculate stats! Div zero!") );
         }
     }
@@ -30,8 +30,8 @@ struct CStats
         }
         else
         {
-            std::cerr << __PRETTY_FUNCTION__ << " Unable to calculate stats! Div zero! Taking 100%\n";
-            recall = 1.0;
+            std::cerr << __PRETTY_FUNCTION__ << " Unable to calculate stats! Div zero! Taking 0.0\n";
+            recall = 0.0;
 //            throw std::runtime_error( __PRETTY_FUNCTION__ + string(" Unable to calculate stats! Div zero!") );
         }
     }
@@ -43,8 +43,8 @@ struct CStats
         }
         else
         {
-            std::cerr << __PRETTY_FUNCTION__ << " Unable to calculate stats! Div zero! Taking 100%\n";
-            accuracy = 1.0;
+            std::cerr << __PRETTY_FUNCTION__ << " Unable to calculate stats! Div zero! Taking 0.0\n";
+            accuracy = 0.0;
 //            throw std::runtime_error( __PRETTY_FUNCTION__ + string(" Unable to calculate stats! Div zero!") );
         }
     }
@@ -56,8 +56,8 @@ struct CStats
         }
         else
         {
-            std::cerr << __PRETTY_FUNCTION__ << " Unable to calculate stats! Div zero! Taking 100%\n";
-            fscore = -1.0;
+            std::cerr << __PRETTY_FUNCTION__ << " Unable to calculate stats! Div zero! Taking 0.0\n";
+            fscore = 0.0;
 //            throw std::runtime_error( __PRETTY_FUNCTION__ + string(" Unable to calculate stats! Div zero!") );
         }
     }
@@ -81,13 +81,27 @@ class CEvaluator
 {
 
 public:
-    CEvaluator() = delete;
-    static CStats CrossValidation(CBaseClassifier* classifier, const CDataSet& dataSet , unsigned fold = 10);
+    enum EAverageStat
+    {
+        AVG_GLOBAL,
+        AVG_UNWEIGHTED,
+        AVG_WEIGHTED
+    };
 
+    CEvaluator() = delete;
+    static CStats StratifiedCrossValidation(CBaseClassifier *classifier, const CDataSet &dataSet, unsigned fold = 10);
+    static CStats CrossValidation(CBaseClassifier* classifier, const CDataSet& dataSet , unsigned fold = 10);
+    static void SetAverageMode( const EAverageStat& a_eMode );
+
+    static CStats CalculateStatsWeighted(const std::vector<int> &predictedValues, const CDataSet &targetDataSet);
+    static CStats CalculateStatsUnweighted(const std::vector<int> &predictedValues, const CDataSet &targetDataSet);
+    static CStats CalculateStatsGlobal(const std::vector<int> &predictedValues, const CDataSet &targetDataSet);
 private:
     static CStats CalculateStats(const std::vector<int> &predictedValues, const CDataSet &targetDataSet);
     static std::vector<std::vector<int>> ConfusionMatrix(const std::vector<int> &predictedValues, const CDataSet &targetDataSet, int classID = -1 );
     static CStats CalculateAverageStat(const std::vector<CStats> &a_aStats);
+
+    static EAverageStat _eMode;
 };
 
 #endif // CEVALUATOR_H
