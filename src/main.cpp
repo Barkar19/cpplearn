@@ -28,12 +28,12 @@ int main()
 //        }
         data.Discretize( CDataSet::DISCRETIZATION_INTERVAL, 20 );
 //        std::cout << data;
-        CEvaluator::SetAverageMode( CEvaluator::AVG_WEIGHTED );
-        std::cout << CEvaluator::StratifiedCrossValidation( pBayes, data );
-        CEvaluator::SetAverageMode( CEvaluator::AVG_UNWEIGHTED );
-        std::cout << CEvaluator::StratifiedCrossValidation( pBayes, data );
+//        CEvaluator::SetAverageMode( CEvaluator::AVG_WEIGHTED );
+//        std::cout << CEvaluator::StratifiedCrossValidation( pBayes, data );
+//        CEvaluator::SetAverageMode( CEvaluator::AVG_UNWEIGHTED );
+//        std::cout << CEvaluator::StratifiedCrossValidation( pBayes, data );
         CEvaluator::SetAverageMode( CEvaluator::AVG_GLOBAL );
-        std::cout << CEvaluator::StratifiedCrossValidation( pBayes, data );
+        std::cout << CEvaluator::CrossValidation( pBayes, data );
         delete pBayes;
 
     }

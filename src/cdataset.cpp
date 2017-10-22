@@ -269,6 +269,10 @@ std::vector<int> CDataSet::AtributesAt(unsigned idx) const
     }
     return result;
 }
+double CDataSet::RealValueAt( unsigned idx, unsigned attrID ) const
+{
+    return _aRealAttributes[attrID][ idx ];
+}
 
 const std::vector<int> &CDataSet::GetTargetValues() const
 {

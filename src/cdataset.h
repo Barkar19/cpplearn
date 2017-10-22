@@ -53,6 +53,7 @@ public:
     void Discretize( EDiscretizationType type , unsigned bins );
 
     const std::vector<double> &GetRealAtribute(unsigned attrID) const;
+    double RealValueAt(unsigned idx, unsigned attrID) const;
 private:
 
     void Clear();

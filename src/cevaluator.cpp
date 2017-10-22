@@ -49,10 +49,11 @@ CStats CEvaluator::StratifiedCrossValidation(CBaseClassifier* classifier, const 
             trainData.Merge( currentTrainData );
             testData.Merge( currentTestData );
         }
-//        std::cout << testData;
+        std::cout << trainData;
+        std::cout << testData;
         classifier->Fit( trainData );
         std::vector<int> predictedClasses = classifier->Predict( testData );
-        ConfusionMatrix( predictedClasses, testData );
+//        ConfusionMatrix( predictedClasses, testData );
         aStats[i] = CalculateStats( predictedClasses, testData );
 //        std::cout << aStats[i];
     }
@@ -81,7 +82,7 @@ std::vector<std::vector<int> > CEvaluator::ConfusionMatrix( const std::vector<in
                   [ *targetIt    != classID ]++;
         }
     }
-#ifdef DEBUG_EVALUATOR
+#ifndef DEBUG_EVALUATOR
     std::cout << "CONF MATRIX\n";
     if ( classID == -1)
     for ( auto row : matrix )

@@ -38,13 +38,13 @@ void CNaiveBayesClassifier::Fit(const CDataSet &trainData)
         {
             for ( unsigned targetClass = 0; targetClass < attributeClass.size(); targetClass++ )
             {
-                attributeClass[ targetClass ]  = std::log10( (attributeClass[ targetClass ] + 1.0) / ( _aClassProbability[ targetClass ] + _aAttrProbability[i].size() ) );
+                attributeClass[ targetClass ]  = std::log( (attributeClass[ targetClass ] + 1.0) / ( _aClassProbability[ targetClass ] + _aAttrProbability[i].size() ) );
             }
         }
     }
     for ( auto& value : _aClassProbability )
     {
-        value =  log10( value / double( trainData.GetSize() ) );
+        value =  log( value / double( trainData.GetSize() ) );
     }
 }
 
@@ -91,10 +91,10 @@ std::vector<std::pair <double,double>> CNaiveBayesClassifier::NormalDistribution
     for ( unsigned i =0; i < targetSize; ++i )
     {
         result[i].first = std::accumulate( values[i].begin(), values[i].end(), 0.0,
-                                           [=](double sum, double x){ return sum + x / values[i].size();});
-        result[i].second = std::sqrt( std::accumulate( values[i].begin(), values[i].end(), 0.0,
-                                            [=](double sum, double x){ return sum + (x - result[i].first)*(x - result[i].first) / values[i].size();}) );
-//        std::cout <<"ATTR ID " << attrID << " CLASS ID " << i << " MEAN: " << result[i].first  << " STD: " << result[i].second <<std::endl;
+                                           [=](double sum, double x){ return sum + x;}) / values[i].size();
+        result[i].second = std::accumulate( values[i].begin(), values[i].end(), 0.0,
+                                            [=](double sum, double x){ return sum + (x - result[i].first)*(x - result[i].first);}) / values[i].size();
+//        std::cout <<"ATTR ID " << attrID << " CLASS ID " << i << " MEAN: " << result[i].first  << " VAR: " << result[i].second <<std::endl;
     }
     return result;
 }
@@ -107,11 +107,11 @@ int CNaiveBayesClassifier::CountUnique( const CDataSet &data , int attrID )
 double CNaiveBayesClassifier::LogNormalDistribution( unsigned attrID, unsigned classID, double x )
 {
     const auto mean = _aAttrNormalDistribution[ attrID ][ classID ].first;
-    const auto sd = _aAttrNormalDistribution[ attrID ][ classID ].second;
+    const auto variance = _aAttrNormalDistribution[ attrID ][ classID ].second;
 
-    const auto exponent = - ( pow(x - mean, 2.0) / ( 2.0 * pow( sd, 2.0) ) );
-    const auto p = ( 1.0 / ( ( sqrt(2.0 * M_PI) * sd ) ) ) * exp( exponent );
-    return log10(p);
+    const double exponent = -(((x - mean) * (x - mean)) / (2.0L * variance));
+    const double p = 1.0L / sqrt(2.0L * M_PI * variance) * M_E;
+    return exponent * log( p );
 }
 
 std::vector<int> CNaiveBayesClassifier::Predict(const CDataSet &testData)
@@ -123,15 +123,17 @@ std::vector<int> CNaiveBayesClassifier::Predict(const CDataSet &testData)
         for( unsigned classID = 0; classID < _aClassProbability.size(); ++classID )
         {
             const auto attrValues = testData.AtributesAt( idx);
+
             for( unsigned attrID = 0; attrID < _aAttrProbability.size(); ++attrID )
             {
-                const double value = attrValues[ attrID ];
-                if ( false )
+                if ( testData.GetAttributesType( attrID ) != CDataSet::ATTR_REAL )
                 {
+                    const double value = attrValues[ attrID ];
                     probabilities[classID] += _aAttrProbability[attrID][testData.ValueToClass(attrID, value)][classID];
                 }
                 else
                 {
+                    const double value = testData.RealValueAt( idx, attrID );
                     probabilities[classID] += LogNormalDistribution( attrID, classID, value );
                 }
             }
