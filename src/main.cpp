@@ -15,9 +15,9 @@ int main()
 //    for ( auto i = 2; i < 5; i += 1 )
     {
         CNaiveBayesClassifier* pBayes = new CNaiveBayesClassifier();
-        data.Load( "data/iris.data", "%f %f %f %f %s", ',' );
+//        data.Load( "data/iris.data", "%f %f %f %f %s", ',' );
 //        data.Load( "data/seeds.data", "%f %f %f %f %f %f %f %s", ',' );
-//        data.Load( "data/ecoli.data", "%s %f %f %f %f %f %f %f %s", ',' );
+        data.Load( "data/ecoli.data", "%s %f %f %s %s %f %f %f %s", ',' );
 //        data.Load( "data/ukm.data", "%f %f %f %f %f %s", ',' );
 //        data.Load( "data/ukm.data", "%s %s %s %s %s %s", ',' );
 //        data.Load( "data/heart.data", "%f %s %s %f %f %s %s %f %s %f %s %s %f %s", ',' );
@@ -26,14 +26,14 @@ int main()
 //        {
 //            std::cout << s;
 //        }
-        data.Discretize( CDataSet::DISCRETIZATION_INTERVAL, 20 );
+        data.Discretize( CDataSet::DISCRETIZATION_INTERVAL, 5 );
 //        std::cout << data;
 //        CEvaluator::SetAverageMode( CEvaluator::AVG_WEIGHTED );
 //        std::cout << CEvaluator::StratifiedCrossValidation( pBayes, data );
 //        CEvaluator::SetAverageMode( CEvaluator::AVG_UNWEIGHTED );
 //        std::cout << CEvaluator::StratifiedCrossValidation( pBayes, data );
         CEvaluator::SetAverageMode( CEvaluator::AVG_GLOBAL );
-        std::cout << CEvaluator::CrossValidation( pBayes, data );
+        std::cout << CEvaluator::StratifiedCrossValidation( pBayes, data );
         delete pBayes;
 
     }
