@@ -1,0 +1,155 @@
+\chapter{Prezentacja}
+\section{Działanie}
+Po uruchomieniu programu ukazuje się menu główne z trzema zakładkami: Home, Calibration oraz Machine learning. W zakładce Home użytkownik wybrać może wejście, które będzie przetwarzane(rys. \ref{fig:home}a). W tej zakładce można również uruchomić główną funkcjonalność programu, czyli rozpoznawanie gestów, dostępne pod przyciskiem Start recognition. Po wybraniu wejścia jako filmu wideo (rys. \ref{fig:home}b) ukazuje się menu wyboru pliku, a po uruchomieniu programu suwak regulujący prędkość przetwarzania w klatkach na sekundę. Jeśli zaznaczona zostanie opcja Max FPS, przetwarzanie obrazu będzie działać z maksymalną wydajnością.
+
+\begin{figure}[!htpb]
+	\centering
+
+	\begin{tabular}{l l}
+		a) & b) \\
+		\fbox{\includegraphics[width=0.45\textwidth]{rys05/home}} &
+		\fbox{\includegraphics[width=0.45\textwidth]{rys05/video}}	
+	\end{tabular}
+	\caption{Główne okno aplikacji.}
+	\label{fig:home}
+\end{figure}
+\newpage
+Drugą zakładką jest kalibracja (rys. \ref{fig:calib}a). W niej można dokonać zmiany opcji segmentacji obrazu. Użytkownik może wybrać pomiędzy metodami wycianania tła i progowania koloru dłoni. Dodatkowo może zapisać i załadować ustawienia. Po uruchomieniu opcji kalibracji koloru, pokazywane są trzy suwaki (rys. \ref{fig:calib}b) odpowiadające kolejnym wartością w przestrzeni HSL.
+
+\begin{figure}[!htpb]
+	\centering
+	\begin{tabular}{l l}
+			a) & b) \\
+			\fbox{\includegraphics[width=0.45\textwidth]{rys05/calib}} &
+			\fbox{\includegraphics[width=0.45\textwidth]{rys05/calib_color}}	
+	\end{tabular}
+	\caption[Okno kalibracji]{Okno kalibracji (po lewej) oraz kalibracja koloru (po prawej).}
+	\label{fig:calib}
+\end{figure}
+
+Zakaładka Machine learning zawiera dwa przyciski (rys. \ref{fig:ml_inside}a): Start data acquisition oraz Vision. Pierwsza opcja odpowiedzialna jest za tworzenie zbioru uczącego (rys. \ref{fig:ml_inside}b), a druga do graficznej prezentacji segmentacji obrazu i tworzenia wektora cech.
+
+\begin{figure}[!htpb]
+	\centering
+	\begin{tabular}{l l}
+			a) & b) \\
+			\fbox{\includegraphics[width=0.45\textwidth]{rys05/ml}} &
+			\fbox{\includegraphics[width=0.45\textwidth]{rys05/ml_data}}	
+	\end{tabular}
+	\caption[Okno uczenia maszynwego i akwizycji danych] {Okno uczenia maszynwegoh (po lewej) oraz akwizycji danych (po prawej).}
+	\label{fig:ml_inside}
+\end{figure}
+\newpage
+\section{Skuteczność} \label{section:experiments}
+Do eksperymentu wyróżniono zestaw 25 gestów dłoni. W tabeli \ref{table:gestures} przedstawiono ich nazwy oraz wygląd.
+
+\newcommand{\gesture}[2]
+{
+#1  &  \raisebox{-0.5\totalheight}[30pt]{\includegraphics[height=30pt]{rys05/#2}}
+}
+
+\begin{table}[!htb]
+\centering
+\caption{Zestawienie gestów dłoni.}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\gesture{CLOSED}{closed} &
+\gesture{POINTING}{pointing} \\ \hline
+\gesture{MIDDLE}{middle}&
+\gesture{LITTLE}{little} \\ \hline
+\gesture{VICTORIA}{victoria}&
+\gesture{GUN}{gun} \\ \hline
+\gesture{MIDDLE GUN}{middle_gun}&
+\gesture{PHONE}{phone} \\ \hline
+\gesture{SNAIL}{snail}&
+\gesture{THREE}{three} \\ \hline
+\gesture{SATAN}{satan}&
+\gesture{OKEY}{okey} \\ \hline
+\gesture{MIDDLE THREE}{middle_three}&
+\gesture{LITTLE VICTORIA}{little_victoria} \\ \hline
+\gesture{FOUR}{four}&
+\gesture{FIVE}{five} \\ \hline
+\gesture{GLOVE}{glove}& 
+\gesture{TWO TWO}{two_two} \\  \hline
+\gesture{THREE ONE}{three_one}&
+\gesture{ONE THREE}{one_three} \\ \hline
+\gesture{ONE TWO ONE}{one_two_one}&
+\gesture{THUMB TWO TWO}{thumb_two_two} \\ \hline
+\gesture{THUMB THREE ONE}{thumb_three_one} &
+\gesture{THUMB ONE THREE}{thumb_one_three} \\ \hline
+\gesture{THUMB ONE TWO ONE}{thumb_one_two_one} &  &\\ \hline 
+\end{tabular}
+\label{table:gestures}
+\end{table}
+\newpage
+W badaniu przetestowano 5 różnych klasyfikatorów, opisanych w rozdziale \ref{section:machine_learning}:
+\begin{itemize}
+	\item SVM - maszyna wektorów nośnych
+	\item RFC - klasyfikator lasu drzew decyzyjnych
+	\item KNN - k - najbliższych sąsiadów
+	\item GNB - naiwny klasyfikator bayesowski
+	\item MLP - wielowarstwowa sieć neuronowa.
+\end{itemize}
+Przeprowadzono przy tym dwa eksperymenty na różnej wielkości bazach. Baza postawowa składała się z 3\,482 rekordów i 7 gestów. Baza rozszerzona natomiast zawierała 37\,872 rekordów podzielonych na 25 klas przedstawionych w tabeli \ref{table:gestures}. Wyniki eksperymentu dla uproszczonego zestawu przedstawiono w tabeli \ref{table:simple_results}, a dla rozszerzonego w \ref{table:results}. Oznaczają one procentową skuteczność rozpoznania danego gestu. 
+
+\begin{table}[!htbp]
+\centering
+\caption{Skuteczność klasyfikatorów - baza podstawowa.}
+\label{table:simple_results}
+\begin{tabular}{l|rrrrrr}
+ & GNB [\%] & KNN [\%] & MLP [\%] & RFC [\%] & SVM [\%] \\ \hline
+CLOSED & 95.2900 & 55.2900 & 89.4100 & 100.0000 & 60.0000 \\
+POINTING & 93.2000 & 84.4700 & 89.3200 & 97.0900 & 83.5000 \\
+FOUR & 90.4800 & 94.0500 & 97.0200 & 98.2100 & 90.4800 \\
+FIVE & 99.4400 & 92.1300 & 94.9400 & 100.0000 & 90.4500 \\
+VICTORIA & 94.9200 & 98.3100 & 98.3100 & 99.1500 & 97.0300 \\
+PHONE & 90.0000 & 98.0000 & 100.0000 & 100.0000 & 98.0000 \\
+THREE & 98.0400 & 94.1200 & 98.0400 & 100.0000 & 94.1200 \\
+\end{tabular}
+\end{table}
+
+Najlepszym modelem klasyfikacji okazał się być las drzew decyzyjnych, który cechował się blisko 100\% skutecznością. Z drugiej strony, najsłabszymi klasyfikatorami w tym przypadku okazały się być MLP oraz GNB. W przypadku sieci neuronowych, słaba skuteczność mogła być wynikiem ustawienia złych parametrów (ilość neuronów, ilość warstw) oraz małego zestawu danych uczących. Jeśli chodzi o naiwny klasyfikator bayesowski, niska skuteczność była spowodowana tym, że wektor cech zawierał dane silnie ze sobą skorelowane, a jego działanie powinno opierać się na wektorach o elementach niezależnych od siebie.
+
+Otrzymane wyniki wyraźnie pokazują, że w przypadku mniejszej bazy gestów, system cechuje się wyraźnie lepszą skutecznością. Podstawowy zbiór gestów zawierał gesty, które wyraźnie się od siebie różniły np. ilość wyprostowanych palców. W połączeniu ze strukturą wektora cech, modele klasyfikatorów mogły lepiej dostosować swoje parametry.
+
+O ile dla danych testowych klasyfikatory wykazały się relatywnie wysoką skutecznością(około 95\% w przypadku bazy podstawowej i 80\% dla bazy rozszerzonej), w praktyce skuteczność ta nie jest tak wysoka. Powodem niższej skuteczności jest najprawdopodobniej zjawisko nadmiernego dopasowania (ang. overfitting), w którym model zbyt dobrze dostosował się do danych uczących. Konfiguracja, specyfika dłoni i inne cechy danych uczących znalazły się w modelu, przez co najmniejsza ich zmiana powoduje obniżenie skuteczności.
+
+\newpage
+\begin{landscape}
+
+\begin{table}[]
+\centering
+\caption{Skuteczność klasyfikatorów - baza rozszerzona.}
+\label{table:results}
+\begin{tabular}{l|rrrrrr}
+& GNB [\%] & KNN [\%] & MLP [\%] & RFC [\%] & SVM [\%] &  \\ \hline
+CLOSED            & 86.6700           & 81.7500           & 64.2100           & 100.0000          & 84.5600           &  \\
+POINTING          & 73.8000           & 83.0700           & 70.6100           & 100.0000          & 86.5800           &  \\
+MIDDLE            & 90.0000           & 77.9300           & 30.6900           & 100.0000          & 43.7900           &  \\
+LITTLE            & 80.5900           & 84.3700           & 76.8200           & 100.0000          & 84.3700           &  \\
+VICTORIA          & 16.8000           & 81.0800           & 71.2400           & 99.4200           & 74.1300           &  \\
+GUN               & 55.3000           & 85.2700           & 53.7500           & 100.0000          & 79.8400           &  \\
+MIDDLE GUN        & 79.4200           & 87.7700           & 66.0200           & 100.0000          & 84.2700           &  \\
+PHONE             & 78.3500           & 76.3800           & 64.7600           & 100.0000          & 75.5900           &  \\
+SNAIL             & 97.2700           & 80.4700           & 74.0200           & 99.4100           & 79.1000           &  \\
+THREE             & 45.5600           & 88.5700           & 78.9500           & 100.0000          & 86.4700           &  \\
+SATAN             & 61.6000           & 82.7300           & 72.1600           & 100.0000          & 82.2200           &  \\
+OKEY              & 93.2000           & 92.2800           & 83.8200           & 100.0000          & 93.7500           &  \\
+MIDDLE THRE       & 76.8400           & 84.4700           & 67.3000           & 100.0000          & 78.7500           &  \\
+LITLLE VICTORIA   & 90.5000           & 88.8300           & 76.9100           & 100.0000          & 81.0100           &  \\
+FOUR              & 88.3000           & 94.1500           & 80.7000           & 100.0000          & 96.4900           &  \\
+FIVE              & 99.4000           & 97.6200           & 93.4500           & 100.0000          & 97.6200           &  \\
+GLOVE             & 98.9200           & 92.8100           & 86.3300           & 100.0000          & 91.0100           &  \\
+TWO TWO           & 93.6900           & 74.7600           & 61.6500           & 100.0000          & 79.1300           &  \\
+THREE ONE         & 93.1000           & 82.4100           & 72.4100           & 100.0000          & 79.3100           &  \\
+ONE THREE         & 33.8500           & 88.8200           & 77.3300           & 100.0000          & 86.0200           &  \\
+ONE TWO ONE       & 70.9600           & 81.7400           & 61.0800           & 100.0000          & 56.2900           &  \\
+THUMB TWO TWO     & 88.8900           & 85.8600           & 75.0800           & 100.0000          & 80.4700           &  \\
+THUMB THREE ONE   & 92.7200           & 87.8700           & 80.0500           & 100.0000          & 90.3000           &  \\
+THUMB ONE THREE   & 75.2300           & 77.5700           & 73.8300           & 100.0000          & 71.5000           &  \\
+THUMB ONE TWO ONE & 99.7500           & 98.2600           & 95.7800           & 100.0000          & 98.7600           & 
+\end{tabular}
+\end{table}
+\end{landscape}
+
+%\section{Wydajność}
