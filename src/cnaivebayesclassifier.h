@@ -13,6 +13,8 @@ public:
     virtual void Fit( const CDataSet& trainData ) override;
     virtual std::vector<int> Predict( const CDataSet& testData ) override;
 
+    void SetNormalDistribution( bool a_bDist );
+
 private:
     virtual void clear() override;
 
@@ -25,6 +27,7 @@ private:
     std::vector<double> _aClassProbability;
     std::vector<std::vector<std::vector<double>>> _aAttrProbability;
     std::vector<std::vector<std::pair<double,double>>> _aAttrNormalDistribution;
+    bool m_bNormalDistribution = false;
 
 };
 

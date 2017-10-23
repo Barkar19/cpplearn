@@ -5,6 +5,7 @@
 #include "cbaseclassifier.h"
 
 #include <iostream>
+#include <cmath>
 
 struct CStats
 {
@@ -17,8 +18,10 @@ struct CStats
         }
         else
         {
-            std::cerr << __PRETTY_FUNCTION__ << " Unable to calculate stats! Div zero! Taking 0.0\n";
-            precision = 0.0;
+#ifdef DIV_WARNING
+            std::cerr << __PRETTY_FUNCTION__ << " Unable to calculate stats! Div zero!\n";
+#endif
+            precision = std::nan("1");
 //            throw std::runtime_error( __PRETTY_FUNCTION__ + string(" Unable to calculate stats! Div zero!") );
         }
     }
@@ -30,8 +33,10 @@ struct CStats
         }
         else
         {
-            std::cerr << __PRETTY_FUNCTION__ << " Unable to calculate stats! Div zero! Taking 0.0\n";
-            recall = 0.0;
+#ifdef DIV_WARNING
+            std::cerr << __PRETTY_FUNCTION__ << " Unable to calculate stats! Div zero!\n";
+#endif
+            recall = std::nan("2");
 //            throw std::runtime_error( __PRETTY_FUNCTION__ + string(" Unable to calculate stats! Div zero!") );
         }
     }
@@ -43,21 +48,25 @@ struct CStats
         }
         else
         {
-            std::cerr << __PRETTY_FUNCTION__ << " Unable to calculate stats! Div zero! Taking 0.0\n";
-            accuracy = 0.0;
+#ifdef DIV_WARNING
+            std::cerr << __PRETTY_FUNCTION__ << " Unable to calculate stats! Div zero!\n";
+#endif
+            accuracy = std::nan("3");
 //            throw std::runtime_error( __PRETTY_FUNCTION__ + string(" Unable to calculate stats! Div zero!") );
         }
     }
     void SetFScore()
     {
-        if ( precision + recall != 0 )
+        if ( (precision + recall ) != 0 )
         {
             fscore = ( 2 * precision * recall ) / ( precision + recall );
         }
         else
         {
-            std::cerr << __PRETTY_FUNCTION__ << " Unable to calculate stats! Div zero! Taking 0.0\n";
-            fscore = 0.0;
+#ifdef DIV_WARNING
+            std::cerr << __PRETTY_FUNCTION__ << " Unable to calculate stats! Div zero!\n";
+#endif
+            fscore = std::nan("4");
 //            throw std::runtime_error( __PRETTY_FUNCTION__ + string(" Unable to calculate stats! Div zero!") );
         }
     }
@@ -69,10 +78,17 @@ struct CStats
 
     friend std::ostream& operator<<( std::ostream& out, const CStats& s)
     {
-        out << "PRECISION: "    << s.precision << std::endl;
-        out << "RECALL: "       << s.recall << std::endl;
-        out << "ACCURACY: "     << s.accuracy << std::endl;
-        out << "FSCORE: "       << s.fscore << std::endl << std::endl;
+//        out << "PRECISION: "    << s.precision << std::endl;
+//        out << "RECALL: "       << s.recall << std::endl;
+//        out << "ACCURACY: "     << s.accuracy << std::endl;
+//        out << "FSCORE: "       << s.fscore << std::endl << std::endl;
+
+#ifdef FILE_OUTPUT
+                out << s.precision << ",";
+                out << s.recall << ",";
+                out << s.accuracy << ",";
+                out << s.fscore << "\n";
+#endif //FILE_OUTPUT
         return out;
     }
 };

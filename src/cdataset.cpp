@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-
+#include <limits>
 CDataSet::CDataSet()
 {
 
@@ -323,20 +323,32 @@ void CDataSet::DiscretizeAtribute(unsigned attrID, CDataSet::EDiscretizationType
             {
                 auto tmp = values;
                 std::sort( tmp.begin(), tmp.end() );
+                auto last = std::unique( tmp.begin(), tmp.end() );
+                tmp.erase( last, tmp.end() );
                 unsigned interval = tmp.size() / bins;
-                boundaries[0] = *( tmp.begin() );
-                for( unsigned i = 1; i < bins; ++i )
+                if( interval )
                 {
+                    boundaries[0] = *( tmp.begin() );
+                    for( unsigned i = 1; i < bins; ++i )
+                    {
 
-                    boundaries[i] = *(tmp.begin() + i * interval);
+                        boundaries[i] = *(tmp.begin() + i * interval);
+                    }
+                    boundaries[bins] = tmp.back();
                 }
-                boundaries[bins] = tmp.back();
-                break;
-            }case DISCRETIZATION_CLUSTERING:
-            {
-                return;
+                else
+                {
+                    boundaries = tmp;
+                    boundaries.push_back( std::numeric_limits<double>::infinity() );
+                }
+
                 break;
             }
+//        case DISCRETIZATION_CLUSTERING:
+//            {
+//                return;
+//                break;
+//            }
         }
 #ifdef DEBUG_DATASET
         std::cout <<"BOUNDARIES FOR ATTR " << attrID << std::endl;
@@ -352,6 +364,14 @@ void CDataSet::DiscretizeAtribute(unsigned attrID, CDataSet::EDiscretizationType
             for( ;idx < boundaries.size()-2 && (boundaries[idx] > num || num > boundaries[idx+1]); idx++ );
             _aAttributes[attrID][i] = idx;
         }
+#ifdef DEBUG_BINS
+        std::cerr << "BINS " << boundaries.size() - 1 << std::endl;;
+        for( unsigned i = 0; i < boundaries.size() - 1; ++i )
+        {
+            std::cerr << i <<": " << std::count( _aAttributes[attrID].begin(), _aAttributes[attrID].end(), i ) <<std::endl;
+        }
+        std::cerr << std::endl << std::endl;
+#endif
 
         _aValuesToClassMap[attrID].clear();
         for( unsigned i = 0; i < bins; ++i )

@@ -29,7 +29,7 @@ void CNaiveBayesClassifier::Fit(const CDataSet &trainData)
 
     for ( unsigned i = 0; i < trainData.GetAttributesSize(); ++i )
     {
-        if ( trainData.GetAttributesType( i ) == CDataSet::ATTR_REAL )
+        if ( trainData.GetAttributesType( i ) == CDataSet::ATTR_REAL && m_bNormalDistribution )
         {
             _aAttrNormalDistribution[i] = NormalDistributionParameters(trainData, i);
         }
@@ -126,15 +126,15 @@ std::vector<int> CNaiveBayesClassifier::Predict(const CDataSet &testData)
 
             for( unsigned attrID = 0; attrID < _aAttrProbability.size(); ++attrID )
             {
-                if ( testData.GetAttributesType( attrID ) != CDataSet::ATTR_REAL )
-                {
-                    const double value = attrValues[ attrID ];
-                    probabilities[classID] += _aAttrProbability[attrID][testData.ValueToClass(attrID, value)][classID];
-                }
-                else
+                if ( testData.GetAttributesType( attrID ) == CDataSet::ATTR_REAL && m_bNormalDistribution )
                 {
                     const double value = testData.RealValueAt( idx, attrID );
                     probabilities[classID] += LogNormalDistribution( attrID, classID, value );
+                }
+                else
+                {
+                    const double value = attrValues[ attrID ];
+                    probabilities[classID] += _aAttrProbability[attrID][testData.ValueToClass(attrID, value)][classID];
                 }
             }
             probabilities[classID] += _aClassProbability[classID];
@@ -143,6 +143,11 @@ std::vector<int> CNaiveBayesClassifier::Predict(const CDataSet &testData)
         result[ idx ] = it - probabilities.begin();
     }
     return result;
+}
+
+void CNaiveBayesClassifier::SetNormalDistribution(bool a_bDist)
+{
+    m_bNormalDistribution = a_bDist;
 }
 
 void CNaiveBayesClassifier::clear()

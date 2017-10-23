@@ -18,9 +18,9 @@ public:
 
     enum EDiscretizationType
     {
-        DISCRETIZATION_FREQUENCY,
-        DISCRETIZATION_INTERVAL,
-        DISCRETIZATION_CLUSTERING
+        DISCRETIZATION_INTERVAL = 1,
+        DISCRETIZATION_FREQUENCY = 2,
+//        DISCRETIZATION_CLUSTERING
     };
 
     CDataSet();

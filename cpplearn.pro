@@ -17,5 +17,5 @@ HEADERS += \
     src/cbaseclassifier.h \
     src/cnaivebayesclassifier.h
 
-
+DEFINES += FILE_OUTPUT
 #DEFINES += DEBUG_EVALUATOR
