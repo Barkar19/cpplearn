@@ -1,8 +1,48 @@
 \chapter{Naiwny klasyfikator bayesowski - opis}
 	\section{Algorytm} \label{algo}
-opis algorytmu
-opis logarytmów
+Naiwny klasyfikator bayesowski opiera się na twierdzeniu bayesa o prawdopodobieństwie warunkowym. Słowo 'naiwny' pochodzi od zaadaptowania warunku iż każdy z atrybutów jest od siebie niezależny. W rzeczywistości warunek ten jest ciężki do spełnienia, ale pomimo tego klasyfikator ten charakteryzuję się zaskakująco dobrą skutecznością.
+
+Budowa modelu polega na wyznaczeniu cząstkowych prawdopodobieństw $P(X_i|C)$ wystąpienia danego atrybutu $X_i$ pod warunkiem wystąpienia klasy $C$ oraz na obliczeniu prawdopodobieństw $P(C)$ wystąpienia danej klasy w zbiorze. Następnie w wyniku zastosowania twierdzenia bayesa i opisanej wyżej 'naiwności' można zastosować poniższy wzór służący do klasyfikacji obiektu o atrybutach $x_1, x_2,..., x_n$ za pomocą poniższego wzoru.
+$$ predict(x_1, x_2,..., x_n) = argmax_cP(C=c)\prod_{i=1}^{n}P(X_i = x_i | C = c)$$
+Innymi słowy, klasyfikacja odbywa się na zasadzie znalezienia wartości maksymalnej z iloczyny wcześniej wyliczonych prawdopodobieństw. 
+
+W implementacji algorytmu często stosuje się wersję z sumą logarytmów prawdopodobieństw, zapewniającą dokładniejsze wyniki dla małych prawdopodobieństw i dużej ilości atrybutów (w wyniku mnożenia i niedokładności liczb zmiennoprzecinkowych można otrzymać zerowe prawdopodobieństwo). 
+$$ predict(x_1, x_2,..., x_n) = argmax_c ln( P(C=c) )\sum_{i=1}^{n}ln( P(X_i = x_i | C = c) )$$
 	\section{Problem zerowego prawdopodobieństwa}
-opis dodawania jedynki
+Podczas nauki klasyfikatora może nastąpić problem zerowego prawdopodobieństwa, w przypadku gdy dana klasa atrybutu nie występuje w parze z klasą. Aby uniknąć tego typu sytuacji należy dodać $1$ do każdego elementu macierzy liczności klasa-atrybut. Metoda ta nazywa się wygładzaniem Laplace'a (ang. Laplace smoothing). Poniżej przedstawiono przykład obliczeniowy ilustrujący działanie metody.
+
+\begin{table}[H]
+\centering
+\caption{Rozkład danych przed zastosowaniem metody}
+\begin{tabular}{ ccc }
+ & $C = yes$ & $C = no$ \\
+$A = sunny$ & 5 & 3 \\
+$A = windy$ & 0 & 0 \\
+\end{tabular}
+\end{table}
+Z powyższej tabeli wynika, że
+$$P(A = sunny | C = yes) = \frac{5}{5} = 1$$
+$$P(A = windy | C = yes) = \frac{0}{5} = 0$$
+
+Po zastosowaniu powyżej opisanej metody otrzymujemy
+
+\begin{table}[H]
+\centering
+\caption{Rozkład danych przed zastosowaniem metody}
+\begin{tabular}{ ccc }
+ & $C = yes$ & $C = no$ \\
+$A = sunny$ & 6 & 4 \\
+$A = windy$ & 1 & 1 \\
+\end{tabular}
+\end{table}
+Z odpowiadającymi nie zerowymi prawdopodobieństwami.
+$$P(A = sunny | C = yes) = \frac{6}{7} $$
+$$P(A = windy | C = yes) = \frac{1}{7} $$
 	\section{Dane ciągłe, rozkład normalny}
-opis realizacji danych ciągłych
+Dla danych ciągłych można także zastosować rozkład Gaussa do obliczenia statystyki. Poniżej przedstawiono wzór na prawdopodobieństwo warunkowe wystąpienia wartości $i$-tego atrybutu $x_i$, pod warunkiem wystąpienia klasy $c$.
+
+$$ P(x_i|c) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(x_i - \mu)^2}{2\sigma^2}}$$, gdzie\newline
+$x_i$ - wartość $i$-tego atrybutu\newline
+$x_i$ - klasa\newline
+$\mu$ - wartość średnia zbioru wartości $i$-tego atrybutu\newline
+$\sigma$ - odchylenie standardowe zbioru wartości $i$-tego atrybutu\newline
