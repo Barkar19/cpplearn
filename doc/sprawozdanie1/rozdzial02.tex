@@ -1,33 +1,108 @@
 \chapter{Dane testowe - charakterystyka}
 
 \section{Seeds}
-	\subsection{Klasy}
-
+	\subsection{Opis}
+Zbiór zawiera dane dotyczące charakterystki ziaren. Zawiera 3 klasy ziaren: Kama, Rosa and Canadian, po 70 rekordów każdy. Każde z ziaren opisane jest przez 7 atrybutów rzeczywistych. Łącznie 210 rekordów. Każde z ziaren jest opisane, nie posiada brakujących wartości. Zbiór może być wykorzystywany do metod klasyfikacji oraz klasteryzacji.
 	\subsection{Dystrybucja klas}
-		
+Liczności poszczególnych klas zostały przedstawione w tabeli \ref{dist-seeds}
+\begin{table}[H]
+\centering
+\caption{Dystrybucja klas w zbiorze seeds.}
+\label{dist-seeds}
+\begin{tabular}{ll}
+NAZWA    & LICZNOŚĆ \\
+Kama     & 70       \\
+Rosa     & 70       \\
+Canadian & 70      
+\end{tabular}
+\end{table}
 	\subsection{Atrybuty}
-opis czym każdy jest
-czy są brakujące wartości?
-	\subsection{Rozkład atrybutów}
+	Poniżej \ref{attr-seeds} przedstawiono opis poszczególnych atrybutów.
+\begin{table}[H]
+\centering
+\caption{Opis atrybutów w zbiorze seeds.}
+\label{attr-seeds}
+\begin{tabular}{lll}
+NAZWA    	& RODZAJ & OPIS \\
+Wielkość	& REAL	& area $A$\\
+Perymetr	& REAL & perimeter $P$\\
+Kompaktowość & REAL & compactness C = $4*pi*A/P^2$\\
+Długość		& REAL & length of kernel\\
+Szerokość	& REAL & width of kernel\\
+Współczynnik asymetrii	& REAL & asymmetry coefficient\\
+Długość rowka			& REAL & length of kernel groove 
+\end{tabular}
+\end{table}
 
 \section{Ecoli}
-	\subsection{Klasy}
-
+	\subsection{Opis}
+Zbiór zawiera dane dotyczące miejsca lokalizacji białek. Zawiera 8 klas lokalizacji przedstawione w tabeli \ref{dist-ecoli}. Każda z lokalizacji opisana jest przez 5 atrybutów rzeczywistych, 2 binarne, 1 kategoryczny, z czego ostatni jest nazwą konkretnej sekwencji (unikalna dla każdego rekordu). Łącznie 336 rekordów. Każdy z nich jest w pełni opisany, nie posiada brakujących wartości. Zbiór może być wykorzystywany do metod klasyfikacji.
 	\subsection{Dystrybucja klas}
-		
+	Liczności poszczególnych klas zostały przedstawione w tabeli \ref{dist-ecoli}
+\begin{table}[H]
+\centering
+\caption{Dystrybucja klas w zbiorze ecoli.}
+\label{dist-ecoli}
+\begin{tabular}{lll}
+NAZWA & LICZNOŚĆ & OPIS \\
+cp	& 143	& cytoplasm\\
+im	& 77	& inner membrane without signal sequence\\
+pp	& 52	& perisplasm\\
+imU	& 35	& inner membrane, uncleavable signal sequence\\
+om	& 20	& outer membrane\\
+omL	& 5	 & outer membrane lipoprotein\\
+imL	& 2	 & inner membrane lipoprotein\\
+imS	& 2	 & inner membrane, cleavable signal sequence
+\end{tabular}
+\end{table}
 	\subsection{Atrybuty}
-opis czym każdy jest
-czy są brakujące wartości?
-	\subsection{Rozkład atrybutów}
-
-
-
+	Poniżej \ref{attr-ecoli} przedstawiono opis poszczególnych atrybutów.
+\begin{table}[H]
+\centering
+\caption{Opis atrybutów w zbiorze seeds.}
+\label{attr-ecoli}
+\begin{tabular}{lll}
+NAZWA    	& RODZAJ \\
+name	& UNIQUE	\\
+mcg	& REAL \\
+gvh & REAL \\
+lip		& BINARY \\
+chg	& BINARY \\
+aac	& REAL \\
+alm2	& REAL \\
+alm1	& REAL
+\end{tabular}
+\end{table}
 \section{User Knwoledge Modelling}
 	\subsection{Klasy}
-
+Zbiór zawiera dane dotyczące koorelacji między wynikami testów badanych osób, a czasem spędzonym na naukę. Zawiera 4 klasy oznaczające wynik egzaminu, przedstawione w tabeli \ref{dist-ukm}. Każda z lokalizacji opisana jest przez 5 atrybutów rzeczywistych.
+Łącznie 403 rekordów. Każdy z nich jest w pełni opisany, nie posiada brakujących wartości. Zbiór może być wykorzystywany do metod klasyfikacji oraz klasteryzacji.
 	\subsection{Dystrybucja klas}
-		
+		Liczności poszczególnych klas zostały przedstawione w tabeli \ref{dist-ukm}
+\begin{table}[H]
+\centering
+\caption{Dystrybucja klas w zbiorze seeds.}
+\label{dist-ukm}
+\begin{tabular}{ll}
+NAZWA    & LICZNOŚĆ \\
+very-low     & 50       \\
+low     & 129       \\
+middle & 122 \\
+high & 130      
+\end{tabular}
+\end{table}
 	\subsection{Atrybuty}
-opis czym każdy jest
-czy są brakujące wartości?
-	\subsection{Rozkład atrybutów}
+		Poniżej \ref{attr-ukm} przedstawiono opis poszczególnych atrybutów.
+\begin{table}[H]
+\centering
+\caption{Opis atrybutów w zbiorze ukm.}
+\label{attr-ukm}
+\begin{tabular}{lll}
+NAZWA    	& RODZAJ & OPIS \\
+STG & REAL & Stopień poświęcenia czasu uczenia na główny cel\\
+SCG & REAL & Stopień powtarzania informacji o głównym celu\\
+STR & REAL & Stopień poświęcenia czasu uczenia na elementy powiązane z głównym celem\\
+LPR & REAL & Wynik egzaminu powiązanego z głównym celem \\
+PEG & REAL & Wynik egzaminu z głównym celem
+\end{tabular}
+\end{table}	

@@ -1,9 +1,190 @@
 \chapter{Wyniki eksperymentów}
 
 \section{Porównanie metod dyskretyzacji}
+\subsection{Zbiór seeds}
+\begin{table}[H]
+\centering
+\caption{Tabela zbiór seeds.}
+\label{table-seeds}
+\begin{tabular}{llllrrrr}
+METHOD    & CROSS      & AVG & SIZE & PRECISION & RECALL & ACCURACY & FSCORE \\
+frequency & stratified & w   & 2    & 0.862     & 0.848  & 0.898    & 0.836  \\
+interval  & stratified & w   & 2    & 0.886     & 0.876  & 0.917    & 0.870  \\
+frequency & stratified & w   & 4    & 0.900     & 0.886  & 0.924    & 0.885  \\
+interval  & stratified & w   & 4    & 0.903     & 0.890  & 0.927    & 0.888  \\
+frequency & stratified & w   & 6    & 0.895     & 0.886  & 0.924    & 0.885  \\
+interval  & stratified & w   & 6    & 0.900     & 0.890  & 0.927    & 0.890  \\
+frequency & stratified & w   & 8    & 0.901     & 0.890  & 0.927    & 0.890  \\
+interval  & stratified & w   & 8    & 0.902     & 0.890  & 0.927    & 0.890  \\
+frequency & stratified & w   & 10   & 0.899     & 0.890  & 0.927    & 0.889  \\
+interval  & stratified & w   & 10   & 0.906     & 0.895  & 0.930    & 0.895  \\
+frequency & stratified & w   & 12   & 0.900     & 0.886  & 0.924    & 0.886  \\
+interval  & stratified & w   & 12   & 0.891     & 0.881  & 0.921    & 0.880  \\
+frequency & stratified & w   & 14   & 0.915     & 0.905  & 0.937    & 0.904  \\
+interval  & stratified & w   & 14   & 0.903     & 0.890  & 0.927    & 0.889  \\
+frequency & stratified & w   & 16   & 0.913     & 0.900  & 0.933    & 0.899  \\
+interval  & stratified & w   & 16   & 0.903     & 0.895  & 0.930    & 0.895  \\
+frequency & stratified & w   & 18   & 0.904     & 0.895  & 0.930    & 0.895  \\
+interval  & stratified & w   & 18   & 0.907     & 0.900  & 0.933    & 0.899  \\
+frequency & stratified & w   & 20   & 0.905     & 0.890  & 0.927    & 0.891  \\
+interval  & stratified & w   & 20   & 0.909     & 0.900  & 0.933    & 0.900 
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=1.0\linewidth]{disc_seeds.png}
+	\caption[Wyniki klasyfikatora dla różnych metod dyskretyzacji. Zbiór seeds.]{Wyniki klasyfikatora dla różnych metod dyskretyzacji. Zbiór seeds.}
+	\label{fig:disc_seeds}
+\end{figure}
+
+\subsection{Zbiór ecoli}
+\begin{table}[H]
+\centering
+\caption{Tabela zbiór ecoli.}
+\label{table-ecoli}
+\begin{tabular}{llllrrrr}
+METHOD    & CROSS      & AVG & SIZE & PREC & RECALL & ACCURACY & FSCORE \\
+frequency & stratified & w   & 2    & nan  & 0.721  & 0.913    & nan    \\
+interval  & stratified & w   & 2    & nan  & 0.712  & 0.911    & nan    \\
+frequency & stratified & w   & 4    & nan  & 0.768  & 0.927    & nan    \\
+interval  & stratified & w   & 4    & nan  & 0.803  & 0.941    & nan    \\
+frequency & stratified & w   & 6    & nan  & 0.809  & 0.945    & nan    \\
+interval  & stratified & w   & 6    & nan  & 0.815  & 0.945    & nan    \\
+frequency & stratified & w   & 8    & nan  & 0.794  & 0.942    & nan    \\
+interval  & stratified & w   & 8    & nan  & 0.782  & 0.940    & nan    \\
+frequency & stratified & w   & 10   & nan  & 0.774  & 0.934    & nan    \\
+interval  & stratified & w   & 10   & nan  & 0.765  & 0.934    & nan    \\
+frequency & stratified & w   & 12   & nan  & 0.771  & 0.935    & nan    \\
+interval  & stratified & w   & 12   & nan  & 0.779  & 0.938    & nan    \\
+frequency & stratified & w   & 14   & nan  & 0.762  & 0.933    & nan    \\
+interval  & stratified & w   & 14   & nan  & 0.756  & 0.932    & nan    \\
+frequency & stratified & w   & 16   & nan  & 0.744  & 0.926    & nan    \\
+interval  & stratified & w   & 16   & nan  & 0.756  & 0.931    & nan    \\
+frequency & stratified & w   & 18   & nan  & 0.753  & 0.926    & nan    \\
+interval  & stratified & w   & 18   & nan  & 0.744  & 0.924    & nan    \\
+frequency & stratified & w   & 20   & nan  & 0.732  & 0.919    & nan    \\
+interval  & stratified & w   & 20   & nan  & 0.756  & 0.926    & nan   
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=1.0\linewidth]{disc_ecoli.png}
+	\caption[Wyniki klasyfikatora dla różnych metod dyskretyzacji. Zbiór ecoli.]{Wyniki klasyfikatora dla różnych metod dyskretyzacji. Zbiór ecoli.}
+	\label{fig:disc_ecoli}
+\end{figure}
+
+\subsection{Zbiór ukm}
+\begin{table}[H]
+\centering
+\caption{Tabela zbiór ukm.}
+\label{table-ukm}
+\begin{tabular}{llllrrrr}
+METHOD    & CROSS      & AVG & SIZE & PREC  & RECALL & ACCURACY & FSCORE \\
+frequency & stratified & w   & 2    & nan   & 0.574  & 0.773    & nan    \\
+interval  & stratified & w   & 2    & nan   & 0.623  & 0.800    & nan    \\
+frequency & stratified & w   & 4    & 0.788 & 0.746  & 0.857    & 0.744  \\
+interval  & stratified & w   & 4    & 0.845 & 0.826  & 0.905    & 0.824  \\
+frequency & stratified & w   & 6    & 0.823 & 0.803  & 0.891    & 0.801  \\
+interval  & stratified & w   & 6    & 0.864 & 0.851  & 0.917    & 0.851  \\
+frequency & stratified & w   & 8    & 0.866 & 0.851  & 0.917    & 0.852  \\
+interval  & stratified & w   & 8    & 0.867 & 0.849  & 0.917    & 0.847  \\
+frequency & stratified & w   & 10   & 0.855 & 0.846  & 0.914    & 0.845  \\
+interval  & stratified & w   & 10   & 0.862 & 0.841  & 0.915    & 0.839  \\
+frequency & stratified & w   & 12   & 0.863 & 0.841  & 0.911    & 0.840  \\
+interval  & stratified & w   & 12   & 0.861 & 0.844  & 0.913    & 0.842  \\
+frequency & stratified & w   & 14   & 0.870 & 0.849  & 0.917    & 0.849  \\
+interval  & stratified & w   & 14   & nan   & 0.849  & 0.918    & nan    \\
+frequency & stratified & w   & 16   & 0.842 & 0.828  & 0.905    & 0.827  \\
+interval  & stratified & w   & 16   & 0.841 & 0.823  & 0.902    & 0.823  \\
+frequency & stratified & w   & 18   & 0.835 & 0.821  & 0.901    & 0.820  \\
+interval  & stratified & w   & 18   & 0.839 & 0.815  & 0.900    & 0.814  \\
+frequency & stratified & w   & 20   & 0.831 & 0.810  & 0.897    & 0.811  \\
+interval  & stratified & w   & 20   & 0.843 & 0.823  & 0.902    & 0.821 
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=1.0\linewidth]{disc_ukm.png}
+	\caption[Wyniki klasyfikatora dla różnych metod dyskretyzacji. Zbiór ukm.]{Wyniki klasyfikatora dla różnych metod dyskretyzacji. Zbiór ukm.}
+	\label{fig:disc_ukm}
+\end{figure}
 
 \section{Porównanie metod kroswalidacji}
 
+\begin{table}[H]
+\centering
+\caption{Tabela kroswalidacja.}
+\label{table-cross}
+\begin{tabular}{lllllrrrr}
+NAME  & DATASET   & CROSS      & AVG & SIZE & PREC  & RECALL & ACCURACY & FSCORE \\
+ukm   & frequency & stratified & w   & 8    & 0.866 & 0.851  & 0.917    & 0.852  \\
+ukm   & frequency & cross      & w   & 8    & 0.865 & 0.850  & 0.914    & 0.850  \\
+ecoli & frequency & stratified & w   & 6    & nan   & 0.809  & 0.945    & nan    \\
+ecoli & frequency & cross      & w   & 6    & nan   & 0.852  & 0.945    & nan    \\
+seeds & frequency & stratified & w   & 14   & 0.915 & 0.905  & 0.937    & 0.904  \\
+seeds & frequency & cross      & w   & 14   & 0.900 & 0.890  & 0.925    & 0.890 
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=1.0\linewidth]{cross.png}
+	\caption[Wyniki klasyfikatora dla różnych metod kroswalidacji.]{Wyniki klasyfikatora dla różnych metod kroswalidacji.}
+	\label{fig:cross}
+\end{figure}
+
+
+
 \section{Porównanie metod obliczenia statystyk}
 
+\begin{table}[H]
+\centering
+\caption{Tabela statystyki.}
+\label{table-stats}
+\begin{tabular}{lllllrrrr}
+NAME  & DATASET   & CROSS      & AVG & SIZE & PREC  & RECALL & ACCURACY & FSCORE \\
+seeds & frequency & stratified & w   & 14   & 0.915 & 0.905  & 0.937    & 0.904  \\
+seeds & frequency & stratified & u   & 14   & 0.915 & 0.905  & 0.937    & 0.904  \\
+seeds & frequency & stratified & g   & 14   & 0.936 & 0.965  & 0.905    & 0.950  \\
+ecoli & frequency & stratified & u   & 6    & nan   & 0.524  & 0.952    & nan    \\
+ecoli & frequency & stratified & w   & 6    & nan   & 0.809  & 0.945    & nan    \\
+ecoli & frequency & stratified & g   & 6    & 0.848 & 0.944  & 0.809    & 0.893  \\
+ukm   & frequency & stratified & u   & 8    & 0.878 & 0.846  & 0.926    & 0.855  \\
+ukm   & frequency & stratified & w   & 8    & 0.866 & 0.851  & 0.917    & 0.852  \\
+ukm   & frequency & stratified & g   & 8    & 0.920 & 0.920  & 0.851    & 0.919 
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=1.0\linewidth]{stats.png}
+	\caption[Wyniki klasyfikatora dla różnych metod obliczania statystyki.]{Wyniki klasyfikatora dla różnych metod obliczania statystyki.}
+	\label{fig:stats}
+\end{figure}
+
 \section{Dane ciągłe}
+
+\begin{table}[H]
+\centering
+\caption{Tabela dane ciągłe.}
+\label{table-norm}
+\begin{tabular}{lllllrrrr}
+NAME  & DATASET   & CROSS      & AVG & SIZE & PREC  & RECALL & ACCURACY & FSCORE \\
+seeds & frequency & stratified & w   & 14   & 0.915 & 0.905  & 0.937    & 0.904  \\
+seeds & norm      & stratified & w   & -    & 0.902 & 0.876  & 0.917    & 0.877  \\
+ecoli & frequency & stratified & w   & 6    & nan   & 0.809  & 0.945    & nan    \\
+ecoli & norm      & stratified & w   & -    & nan   & 0.412  & 0.680    & nan    \\
+ukm   & frequency & stratified & w   & 8    & 0.866 & 0.851  & 0.917    & 0.852  \\
+ukm   & norm      & stratified & w   & -    & 0.880 & 0.864  & 0.924    & 0.864 
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=1.0\linewidth]{norm.png}
+	\caption[Porównanie wyników dyskretnych z wartościami ciągłymi.]{Porównanie wyników dyskretnych z wartościami ciągłymi.}
+	\label{fig:norm}
+\end{figure}

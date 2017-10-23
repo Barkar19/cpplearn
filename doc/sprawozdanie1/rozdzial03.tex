@@ -1,5 +1,49 @@
 \chapter{Działanie klasyfikatora}
-	\section{Ładowanie i przetwarzanie danych}
+	\section{Ładowanie i przetwarzanie danych}\label{discret}
+Dane do nauki klasyfikatora zapisane są w formacie tekstowym, z których każda wartość odseparowana jest od siebie przecinkiem. Po załadowaniu wszystkich elementów, rozmieszczane są one losowo w tablicy. Po załadowaniu danych programista może określić jaką metodę dyskretyzacji chciałby użyć. Poniżej przedstawiono typy zaimplementowanych dyskretyzacji.
+\begin{table}[H]
+\centering
+\caption{Rodzaje dyskretyzacji.}
+\label{dist-ukm}
+\begin{tabular}{  ll m{8cm}}
+NAZWA & KOD & OPIS\\\hline
+Interwałowa & interval & Podział danych równomiernie pomiędzy odpowiednie zakresy liczbowe.\\\hline
+Częstotliwościowa & frequency & Podział danych równomiernie pomiędzy odpowiednie zakresy częstotliwościowe. \\\hline
+\end{tabular}
+\end{table}
 	\section{Budowanie klasyfikatora}
+Po załadowaniu danych następuje budowanie klasyfikatora. Do nauki zbioru danych wykorzystuje się metodę, która implementuje algorytm opisany w \ref{algo}. 
+
+Jeżeli zostanie ustawiona odpowiednia opcja, poszczególne atrybuty rzeczywiste zostaną potraktowane jako wartości ciągłe o odpowiednim rozkładzie normalnym. W przeciwnym razie wartości ciągłe zostaną poddane dyskretyzacji zgodnie z wybraną metodą, opisaną w \ref{discret}
 	\section{Kroswalidacja}
+Zaimplementowane zostały dwa sposoby wykonywania kroswalidacji:
+\begin{itemize}
+\item $K$-krotna walidacja krzyżowa
+\item Kroswalidacja stratyfikowana
+\end{itemize}
+
+Pierwsza z nich dzieli zbiór wejściowy na $K$ części, w kolejnych iteracjach każda z nich jest zbiorem testowym, a pozostałe części zbiorem uczącym.
+
+Druga z nich to połączenie powyższego z warunkiem zapewniającym, że w każdej części znajdzie się proporcjonalna ilość rekordów danej klasy co w zbiorze wejściowym.
 	\section{Obliczenie statystyk}
+W celu porównania klasyfikatorów między sobą oraz oceny ogólnej charakterystyki dla danego zbioru danych, zaimplementowano cztery statystyki:
+\begin{itemize}
+\item precision
+\item recall
+\item accuracy
+\item fscore
+\end{itemize}
+
+Ich uśrednianie wynikające z zastosowania kroswalidacji zostało zaimplementowane na 3 sposoby przedstawione w tabeli \ref{avg-stats}
+
+\begin{table}[H]
+\centering
+\caption{Rodzaje uśredniania.}
+\label{avg-stats}
+\begin{tabular}{  ll m{10cm}}
+NAZWA & KOD & OPIS\\\hline
+Arytmetyczna & u & Średnia arytmetyczna wskaźników dla każdej klasy.\\\hline
+Ważona & w & Średnia ważona wskaźników dla każdej klasy. Wagi proporcjonalne do wystąpień klas w zbiorze. \\\hline
+Globalna & g & Globalne obliczanie statystyk z macierzy konfuzji.\\\hline
+\end{tabular}
+\end{table}
