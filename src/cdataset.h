@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 
+using namespace std;
 
 class CDataSet
 {
@@ -54,6 +55,9 @@ public:
 
     const std::vector<double> &GetRealAtribute(unsigned attrID) const;
     double RealValueAt(unsigned idx, unsigned attrID) const;
+
+    unsigned CountIf(vector<pair<int, int> > rules) const;
+    unsigned Filter(vector<pair<int, int> > rules);
 private:
 
     void Clear();

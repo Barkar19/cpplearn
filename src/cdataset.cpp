@@ -2,9 +2,11 @@
 
 #include <sstream>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <algorithm>
 #include <limits>
+
 CDataSet::CDataSet()
 {
 
@@ -65,7 +67,7 @@ void CDataSet::Load( std::string strFileName, std::string strFormat, char strDel
         }
     }
 
-    std::random_shuffle( lines.begin(), lines.end() );
+//    std::random_shuffle( lines.begin(), lines.end() );
 
     for ( const auto& line : lines )
     {
@@ -223,6 +225,65 @@ std::vector<CDataSet> CDataSet::SplitByClasses() const
                                _aAttributes[ _aAttributes.size() - 1][i] )].Merge( record );
     }
     return aResult;
+}
+
+unsigned CDataSet::CountIf( vector<pair<int,int>> rules ) const
+{
+    unsigned result = 0;
+    for ( unsigned i = 0; i < _iSize; ++i )
+    {
+        bool countRow = true;
+        for ( unsigned j = 0; j < rules.size(); ++j )
+        {
+            const auto& attrID = rules[j].first;
+            const auto& attrValue = rules[j].second;
+            if ( _aAttributes[attrID][i] != attrValue )
+            {
+                countRow = false;
+                break;
+            }
+        }
+        if ( countRow )
+        {
+            result++;
+        }
+    }
+    return result;
+}
+
+unsigned CDataSet::Filter(vector<pair<int, int> > rules)
+{
+    vector<int> idsToRemove;
+    for ( unsigned i = 0; i < _iSize; ++i )
+    {
+        bool countRow = true;
+        for ( unsigned j = 0; j < rules.size(); ++j )
+        {
+            const auto& attrID = rules[j].first;
+            const auto& attrValue = rules[j].second;
+            if ( _aAttributes[attrID][i] != attrValue )
+            {
+                countRow = false;
+                break;
+            }
+        }
+        if ( countRow )
+        {
+            idsToRemove.push_back( i );
+        }
+    }
+    for ( auto idx = idsToRemove.rbegin(); idx != idsToRemove.rend(); idx++ )
+    {
+        for ( unsigned i = 0; i < _aAttributes.size(); ++i )
+        {
+            _aAttributes[i].erase( _aAttributes[i].begin() + *idx, _aAttributes[i].begin() + *idx+1);
+            if ( _aAttributeTypes[i] == ATTR_REAL )
+            {
+                _aRealAttributes[i].erase( _aRealAttributes[i].begin() + *idx, _aRealAttributes[i].begin() + *idx+1);
+            }
+        }
+        _iSize--;
+    }
 }
 
 const std::vector<std::vector<int> > &CDataSet::GetAtributes() const
@@ -429,15 +490,17 @@ std::ostream& operator<<( std::ostream &out, const CDataSet &set )
 {
     out << "DATA SET SIZE "<< set._iSize << "\n";
     out << "ATTRSIBUTES: " << set._aAttributes.size() << std::endl;
-
-    for( unsigned j = 0; j < set._aAttributes.back().size(); ++j )
+    if ( set._iSize )
     {
-        out << "[" << j << ".] ROW: ";
-        for ( unsigned i =0; i < set._aAttributes.size(); ++i )
+        for( unsigned j = 0; j < set._aAttributes.back().size(); ++j )
         {
-            out << set.PrintValue(i, j) << "\t";
+            out << "[" << j << ".] ROW: ";
+            for ( unsigned i =0; i < set._aAttributes.size(); ++i )
+            {
+                out << std::left <<std::setw(20) << set.PrintValue(i, j);
+            }
+            out << std::endl;
         }
-        out << std::endl;
     }
     return out;
 }
