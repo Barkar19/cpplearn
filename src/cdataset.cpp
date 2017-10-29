@@ -321,24 +321,20 @@ void CDataSet::DiscretizeAtribute(unsigned attrID, CDataSet::EDiscretizationType
             }
             case DISCRETIZATION_FREQUENCY:
             {
-                auto tmp = values;
-                std::sort( tmp.begin(), tmp.end() );
-                auto last = std::unique( tmp.begin(), tmp.end() );
-                tmp.erase( last, tmp.end() );
-                unsigned interval = tmp.size() / bins;
+                unsigned interval = values.size() / bins;
                 if( interval )
                 {
-                    boundaries[0] = *( tmp.begin() );
+                    boundaries[0] = *( values.begin() );
                     for( unsigned i = 1; i < bins; ++i )
                     {
 
-                        boundaries[i] = *(tmp.begin() + i * interval);
+                        boundaries[i] = *(values.begin() + i * interval);
                     }
-                    boundaries[bins] = tmp.back();
+                    boundaries[bins] = values.back();
                 }
                 else
                 {
-                    boundaries = tmp;
+                    boundaries = values;
                     boundaries.push_back( std::numeric_limits<double>::infinity() );
                 }
 

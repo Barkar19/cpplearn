@@ -12,10 +12,11 @@ int main()
     std::srand(std::time(0));
     std::vector<std::pair<string,string>> dataString;
 //    dataString.push_back( pair<string,string>( "data/iris.data", "%f %f %f %f %s" ) );
-    dataString.push_back( pair<string,string>( "data/seeds.data", "%f %f %f %f %f %f %f %s" ) );
-    dataString.push_back( pair<string,string>( "data/ecoli.data", "%s %f %f %f %f %f %f %f %s" ) );
-    dataString.push_back( pair<string,string>( "data/ukm.data", "%f %f %f %f %f %s" ) );
+//    dataString.push_back( pair<string,string>( "data/seeds.data", "%f %f %f %f %f %f %f %s" ) );
+//    dataString.push_back( pair<string,string>( "data/ecoli.data", "%s %f %f %f %f %f %f %f %s" ) );
+//    dataString.push_back( pair<string,string>( "data/ukm.data", "%f %f %f %f %f %s" ) );
 //    dataString.push_back( pair<string,string>( "data/heart.data", "%f %s %s %f %f %s %s %f %s %f %s %s %f %s" ) );
+    dataString.push_back( pair<string,string>( "data/wine.data", "%f %f %f %f %f %f %f %f %f %f %f %f %f %s" ) );
 
     for ( auto data : dataString )
     {
