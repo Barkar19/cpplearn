@@ -16,9 +16,9 @@ int main()
 //    dataString.push_back( pair<string,string>( "data/ila.data", "%s %s %s %s" ) );
 //    dataString.push_back( pair<string,string>( "data/seasons.data", "%s %s %s %s" ) );
     dataString.push_back( pair<string,string>( "data/iris.data", "%f %f %f %f %s" ) );
-    dataString.push_back( pair<string,string>( "data/seeds.data", "%f %f %f %f %f %f %f %s" ) );
-    dataString.push_back( pair<string,string>( "data/ecoli.data", "%s %f %f %f %f %f %f %f %s" ) );
-    dataString.push_back( pair<string,string>( "data/ukm.data", "%f %f %f %f %f %s" ) );
+//    dataString.push_back( pair<string,string>( "data/seeds.data", "%f %f %f %f %f %f %f %s" ) );
+//    dataString.push_back( pair<string,string>( "data/ecoli.data", "%s %f %f %f %f %f %f %f %s" ) );
+//    dataString.push_back( pair<string,string>( "data/ukm.data", "%f %f %f %f %f %s" ) );
 //    dataString.push_back( pair<string,string>( "data/heart.data", "%f %s %s %f %f %s %s %f %s %f %s %s %f %s" ) );
 //    dataString.push_back( pair<string,string>( "data/wine.data", "%f %f %f %f %f %f %f %f %f %f %f %f %f %s" ) );
 
@@ -28,24 +28,23 @@ int main()
         CDataSet* pDataSet = new CDataSet;
         pDataSet->Load( data.first, data.second, ',' );
 //        std::cout << *pDataSet;
-        for ( unsigned i = 2; i <= 20; ++i )
+        for ( unsigned i = 2; i <= 10; ++i )
         {
             vector<CDataSet::EDiscretizationType> dis = { CDataSet::DISCRETIZATION_INTERVAL,
                                                           CDataSet::DISCRETIZATION_FREQUENCY };
             for ( auto t : dis )
             {
                 pDataSet->Discretize( t, i);
-//                pDataSet->Discretize( CDataSet::DISCRETIZATION_INTERVAL, 20);
-
-
-//                std::cerr << data.first << "discrete" << 2 <<","<<2<<"\n";
+                std::cerr << data.first << ",discrete"<<t<<"," << i <<"\n";
                 CILARulesExtractor ila;
-                auto rules = ila.ExtractRules( *pDataSet );
-                cout << "RULES SIZE: " << rules.size() << endl;
-                for ( auto v : rules )
-                {
-//                    cout << v;
-                }
+
+                CEvaluator::SetAverageMode( CEvaluator::AVG_WEIGHTED );
+                std::cout << CEvaluator::StratifiedCrossValidation( &ila, *pDataSet );
+                CEvaluator::SetAverageMode( CEvaluator::AVG_UNWEIGHTED );
+                std::cout << CEvaluator::StratifiedCrossValidation( &ila, *pDataSet );
+                CEvaluator::SetAverageMode( CEvaluator::AVG_GLOBAL );
+                std::cout << CEvaluator::StratifiedCrossValidation( &ila, *pDataSet );
+
             }
         }
         delete pDataSet;

@@ -24,6 +24,11 @@ void CRule::SetClass(int classID)
     _classID = classID;
 }
 
+int CRule::GetClass()
+{
+    return _classID;
+}
+
 vector<pair<int, int> > &CRule::GetRules()
 {
     return _rules;

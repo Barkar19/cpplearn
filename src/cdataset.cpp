@@ -67,7 +67,7 @@ void CDataSet::Load( std::string strFileName, std::string strFormat, char strDel
         }
     }
 
-//    std::random_shuffle( lines.begin(), lines.end() );
+    std::random_shuffle( lines.begin(), lines.end() );
 
     for ( const auto& line : lines )
     {

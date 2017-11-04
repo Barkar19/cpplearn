@@ -16,6 +16,7 @@ public:
     void SetRule( int attrID, int attrValue, int classID );
     void SetRule( vector<pair<int,int>> rules, int classID );
     void SetClass( int classID );
+    int GetClass();
 
 
     vector<pair<int,int>>& GetRules();

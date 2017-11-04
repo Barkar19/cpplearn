@@ -5,17 +5,28 @@
 #include "crule.h"
 #include "cdataset.h"
 
+#include "cbaseclassifier.h"
+
 using namespace std;
 
-class CILARulesExtractor
+class CILARulesExtractor : public CBaseClassifier
 {
 public:
     CILARulesExtractor();
 
-    vector<CRule> ExtractRules( const CDataSet& data );
+
+    virtual void Fit( const CDataSet& trainData ) override;
+    virtual std::vector<int> Predict( const CDataSet& testData ) override;
 private:
+    virtual void clear() override;
+
+    vector<CRule> ExtractRules( const CDataSet& data );
     CRule GetRuleTemplate(std::string bitmask);
     bool GetNextRule(const CDataSet &data, CRule& rule);
+    bool ApplyRule( vector<int> values, CRule rule );
+
+    vector<CRule> _aRules;
+    int _mostFrequentClass = -1;
 };
 
 #endif // CILARULESEXTRACTOR_H

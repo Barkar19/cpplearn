@@ -8,10 +8,78 @@ CILARulesExtractor::CILARulesExtractor()
 
 }
 
+void CILARulesExtractor::Fit(const CDataSet &trainData)
+{
+    clear();
+    _aRules = ExtractRules( trainData );
+}
+
+std::vector<int> CILARulesExtractor::Predict(const CDataSet &testData)
+{
+    std::vector<int> result( testData.GetSize(), -1 );
+    for ( unsigned idx = 0; idx < testData.GetSize(); idx++ )
+    {
+        auto attributes = testData.AtributesAt( idx );
+        std::vector<int> votes( testData.GetTargetMapSize(), 0 );
+        for ( auto r : _aRules )
+        {
+            if ( ApplyRule( attributes, r) )
+            {
+                result[ idx ] = r.GetClass();
+                votes[ r.GetClass() ]++;
+            }
+        }
+//        if ( votes[0] > 0 || votes[1] > 0 || votes[2] > 0)
+//            cout << votes[0] << " " << votes[1] << " " << votes[2] << "\n";
+        if ( votes[0] || votes[1] || votes[2] )
+        {
+            result[ idx ] = std::max_element( votes.begin(), votes.end() ) - votes.begin();
+        }
+        else
+        {
+            std::cerr << "NO RULE FOUND. ASUME MOST FREQUENT CLASS\n";
+            result[ idx ] = _mostFrequentClass;
+        }
+    }
+    return result;
+}
+
+void CILARulesExtractor::clear()
+{
+    _mostFrequentClass = -1;
+    _aRules.clear();
+}
+
+bool CILARulesExtractor::ApplyRule( vector<int> values, CRule rule )
+{
+    bool result = true;
+    auto rules = rule.GetRules();
+    for ( const auto & r : rules )
+    {
+        const auto& attrID = r.first;
+        const auto& attrValue = r.second;
+        if ( values[attrID] != attrValue )
+        {
+            result = false;
+            break;
+        }
+    }
+    return result;
+}
+
 vector<CRule> CILARulesExtractor::ExtractRules(const CDataSet &data)
 {
     vector<CRule> results;
     const vector<CDataSet> subsets = data.SplitByClasses();
+    int max = -1;
+    for ( unsigned j = 0; j < subsets.size(); j++ )
+    {
+        if ( max < subsets[j].GetSize() )
+        {
+            max = subsets[j].GetSize();
+            _mostFrequentClass = j;
+        }
+    }
     for( unsigned i = 0; i < subsets.size(); ++i ) // FOR EACH SUBSET
     {
         CDataSet currentSubset = subsets[i];
