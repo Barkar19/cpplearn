@@ -37,7 +37,7 @@ std::vector<int> CILARulesExtractor::Predict(const CDataSet &testData)
         }
         else
         {
-            std::cerr << "NO RULE FOUND. ASUME MOST FREQUENT CLASS\n";
+//            std::cerr << "NO RULE FOUND. ASUME MOST FREQUENT CLASS\n";
             result[ idx ] = _mostFrequentClass;
         }
     }
@@ -71,7 +71,7 @@ vector<CRule> CILARulesExtractor::ExtractRules(const CDataSet &data)
 {
     vector<CRule> results;
     const vector<CDataSet> subsets = data.SplitByClasses();
-    int max = -1;
+    unsigned max = 0;
     for ( unsigned j = 0; j < subsets.size(); j++ )
     {
         if ( max < subsets[j].GetSize() )
