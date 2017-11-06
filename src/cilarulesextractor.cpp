@@ -114,7 +114,7 @@ vector<CRule> CILARulesExtractor::ExtractRules(const CDataSet &data)
                     {
 //                        cout << currentRuleAttr;
 //                        cout << "COUNT RULE: " << data.CountIf( currentRuleAttr.GetRules() )<<endl;
-                        if ( restOfData.CountIf( currentRuleAttr.GetRules() ) == 0 )
+                        if ( restOfData.CountIfBool( currentRuleAttr.GetRules() ) )
                         {
                             const unsigned rows = currentSubset.CountIf( currentRuleAttr.GetRules() );
                             if ( rows > maxRows )

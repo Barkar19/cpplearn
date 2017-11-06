@@ -27,9 +27,9 @@ int main()
     {
         CDataSet* pDataSet = new CDataSet;
         pDataSet->Load( data.first, data.second, ',' );
-        for ( unsigned i = 2; i <= 6; i+=2 )
+        for ( unsigned i = 2; i <= 20; i+=2 )
         {
-            CBaseClassifier* pClassifier = new CNaiveBayesClassifier();
+            CBaseClassifier* pClassifier = new CILARulesExtractor();
 
             vector<CDataSet::EDiscretizationType> dis = { CDataSet::DISCRETIZATION_INTERVAL,
                                                           CDataSet::DISCRETIZATION_FREQUENCY };

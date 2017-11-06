@@ -58,6 +58,7 @@ public:
 
     unsigned CountIf(vector<pair<int, int> > rules) const;
     unsigned Filter(vector<pair<int, int> > rules);
+    bool CountIfBool(vector<pair<int, int> > rules) const;
 private:
 
     void Clear();

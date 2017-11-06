@@ -251,6 +251,29 @@ unsigned CDataSet::CountIf( vector<pair<int,int>> rules ) const
     return result;
 }
 
+bool CDataSet::CountIfBool( vector<pair<int,int>> rules ) const
+{
+    for ( unsigned i = 0; i < _iSize; ++i )
+    {
+        bool countRow = true;
+        for ( unsigned j = 0; j < rules.size(); ++j )
+        {
+            const auto& attrID = rules[j].first;
+            const auto& attrValue = rules[j].second;
+            if ( _aAttributes[attrID][i] != attrValue )
+            {
+                countRow = false;
+                break;
+            }
+        }
+        if ( countRow )
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 unsigned CDataSet::Filter(vector<pair<int, int> > rules)
 {
     vector<int> idsToRemove;
