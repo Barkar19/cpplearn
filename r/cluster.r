@@ -1,43 +1,36 @@
-print("Hello r")
+library("clValid")
+library("cluster")
+library("clusterCrit")
 
-df <- read.csv("../data/weka/ecoli.csv", header = TRUE)
-
-head(df)
-
-table(df$class)
-
+#functions...
 normalize <- function(x) {
   return ((x - min(x)) / (max(x) - min(x)))
 }
 
 purity <- function(clusters, classes) {
-  sum(apply(table(classes, clusters), 2, max)) / length(clusters)
+  return (sum(apply(table(classes, clusters), 2, max)) / length(clusters))[1]
 }
 
-classes <- df$class
-CLASS_SIZE <- length(table(classes))
+clusteringStats <- function(df, clusteringType) {
 
-df$class <- NULL
-df <- as.data.frame(lapply(df, normalize))
+	classes <- df$class
+	CLASS_SIZE <- length(table(classes))
 
+	df$class <- NULL
+	df <- as.data.frame(lapply(df, normalize))
 
+	dfCluster <- clusteringType(df, CLASS_SIZE)
 
+	intIdx <- intCriteria(as.matrix(df),dfCluster$cluster,c("Silhouette","Dunn"))
 
-dfCluster <- kmeans(df, CLASS_SIZE)
+	value <- purity(dfCluster$cluster, classes)
 
-dfCluster
+	intIdx[["purity"]] <- value
 
+	return (intIdx)
+}
 
-table(dfCluster$cluster, classes)
-purity(dfCluster$cluster, classes)
-library(cluster)
-dfPAM <- pam( df, CLASS_SIZE )
+df <- read.csv("/home/data/ecoli.csv", header = TRUE)
 
-dfPAM
-table(dfPAM$clustering, classes)
-
-purity(dfPAM$clustering, classes)
-
-apply(table(dfPAM$cluster, classes),2,max)
-
-
+clusteringStats(df, pam)
+clusteringStats(df, kmeans)
