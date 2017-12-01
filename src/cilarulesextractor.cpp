@@ -91,10 +91,7 @@ vector<CRule> CILARulesExtractor::ExtractRules(const CDataSet &data)
                 restOfData.Merge( subsets[j] );
             }
         }
-//        cout << "CURRENT DATA: " << currentSubset;
-//        cout << "REST DATA: " << restOfData;
-//        // SET OF ATTRIBUTES ( K OF N, for K = 1 ... N)
-//        // MAX ROWS PER RULE = 0
+
         do
         {
 
@@ -108,12 +105,9 @@ vector<CRule> CILARulesExtractor::ExtractRules(const CDataSet &data)
                 bitmask.resize( data.GetAttributesSize(), '0');
                 do
                 {
-//                    cout << "BITMASK:" << bitmask << endl << endl;
                     CRule currentRuleAttr = GetRuleTemplate( bitmask );
                     do
                     {
-//                        cout << currentRuleAttr;
-//                        cout << "COUNT RULE: " << data.CountIf( currentRuleAttr.GetRules() )<<endl;
                         if ( restOfData.CountIfBool( currentRuleAttr.GetRules() ) )
                         {
                             const unsigned rows = currentSubset.CountIf( currentRuleAttr.GetRules() );
@@ -125,8 +119,7 @@ vector<CRule> CILARulesExtractor::ExtractRules(const CDataSet &data)
                         }
                     } while ( GetNextRule(data, currentRuleAttr ) );
                 } while ( std::prev_permutation( bitmask.begin(), bitmask.end() ) );
-            } while( attributesCount != data.GetAttributesSize() && !maxRows );// MAX ROWS PER RULE == 0
-//        //REMOVE CORESPONDINNG RULES FROMM SUBSET AND DO IT AGAIN UNITL SUBSET IS NOT EMPTY
+            } while( attributesCount != data.GetAttributesSize() && !maxRows );
         bestRule.SetClass( currentSubset.GetAtributes().back().back());
         currentSubset.Filter( bestRule.GetRules() );
         results.push_back( bestRule );
