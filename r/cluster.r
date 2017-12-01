@@ -40,13 +40,9 @@ for (i in 1:10)
   dataframe <- cbind(df)
   out <- split( df , f = dataframe$class )
   train <- NULL
-  for (j in 1:length(table(dataframe$class)))
-  {
-    tmp <- out[[j]]
-    indices <- (((i-1) * round((1/10)*nrow(tmp))) + 1):((i*round((1/10) * nrow(tmp))))
+    indices <- (((i-1) * round((1/10)*nrow(dataframe))) + 1):((i*round((1/10) * nrow(dataframe))))
     # Exclude them from the train set
-    train <- rbind( train, tmp[-indices,])
-  }
+    train <- rbind( train, dataframe[-indices,])
   rownames(train) <- NULL
 
   results <- rbind( results, clusteringStats(train, kmeans) )
@@ -58,7 +54,7 @@ SValue <- mean(as.double(results[,"silhouette"]))
 dunnValue <- mean(as.double(results[,"dunn"]))
 purityValue <- mean(as.double(results[,"purity"]))
 
-return( list( DBValue, SValue,dunnValue, purityValue) )
+return( results)
 }
 
 names <- list( "/home/data/seeds.csv", "/home/data/ecoli.csv", "/home/data/ukm.csv", "/home/data/ecoli.csv")
@@ -67,8 +63,11 @@ for (n in names)
 {
 df <- read.csv(n, header = TRUE)
 
-out <- crossValidate(df, kmeans)
-strings <- rbind( strings, sprintf("%s,%f,%f,%f,%f",n, out[[1]], out[[2]], out[[3]], out[[4]]) )
+res <- crossValidate(df, kmeans)
+for( row_id in 1:nrow(res) )
+{
+strings <- rbind( strings, sprintf("%s,%f,%f,%f,%f",n, res[row_id,"davies_bouldin"], res[row_id,"silhouette"], res[row_id,"dunn"], res[row_id,"purity"]) )
+}
 }
 
 strings
