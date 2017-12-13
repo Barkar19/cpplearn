@@ -4,9 +4,12 @@
 #include "cevaluator.h"
 #include "cnaivebayesclassifier.h"
 #include "cilarulesextractor.h"
+#include "cknnclassifier.h"
+
 #include <ctime>
 #include <sstream>
 #include <chrono>
+
 
 using namespace std;
 
@@ -29,7 +32,7 @@ int main()
         pDataSet->Load( data.first, data.second, ',' );
         for ( unsigned i = 2; i <= 20; i+=2 )
         {
-            CBaseClassifier* pClassifier = new CILARulesExtractor();
+            CBaseClassifier* pClassifier = new CKNNClassifier();
 
             vector<CDataSet::EDiscretizationType> dis = { CDataSet::DISCRETIZATION_INTERVAL,
                                                           CDataSet::DISCRETIZATION_FREQUENCY };

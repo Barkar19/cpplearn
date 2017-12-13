@@ -358,6 +358,19 @@ double CDataSet::RealValueAt( unsigned idx, unsigned attrID ) const
     return _aRealAttributes[attrID][ idx ];
 }
 
+std::vector<double> CDataSet::GetRealAtributeValues(unsigned idx) const
+{
+    std::vector<double> values;
+    for ( unsigned attrID =0; attrID < GetAttributesSize(); ++attrID )
+    {
+        if ( GetAttributesType( attrID ) == CDataSet::ATTR_REAL )
+        {
+            values.push_back( RealValueAt(idx, attrID ) );
+        }
+    }
+    return values;
+}
+
 const std::vector<int> &CDataSet::GetTargetValues() const
 {
     return _aAttributes.back();
